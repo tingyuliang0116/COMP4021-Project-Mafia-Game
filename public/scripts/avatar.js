@@ -1,21 +1,21 @@
 Avatar = (function () {
     // This stores the available avatars
     const avatars = {
-        "Occupations": {
-            "Doctor": "&#129464;",
-            "Engineer": "&#128118;",
-            "Scientist": "&#129505;",
-            "Teacher": "&#129463;",
-            "Chef": " &#129374;",
-            "Police Officer": "&#128105;",
-            "Firefighter": "&#128692;",
-            "Artist": "&#127908;",
-            "Musician": "&#127926;",
-            "Athlete": "&#127947;",
-            "Writer": "&#9997;",
-            "Astronaut": "&#128105;",
-            "Farmer": "&#129468;",
-            "Mechanic": "&#128105;"
+        "Person Roles": {
+            "Police": "&#128110;",
+            "Bunnies": "&#128111;",
+            "Bride": "&#128112;",
+            "Man Gua pi mao": "&#128114;",
+            "Man turban": "&#128115;",
+            "Construction worker": "&#128119;",
+            "Princess": "&#128120;",
+            "Business suit": "&#128372;",
+            "Detective or Spy": "&#128373;",
+            "Helpdesk": "&#128129;",
+            "Guardsman": "&#128130;",
+            "Dancer": "&#128131;",
+            "Prince": "&#129332;",
+            "Man in tuxedo": "&#129333;"
         }
     };
 

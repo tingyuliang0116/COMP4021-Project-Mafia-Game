@@ -22,7 +22,9 @@ const SignInForm = (function () {
                     hide();
                     UserPanel.update(Authentication.getUser());
                     UserPanel.show();
-
+                    StartPanel.show();
+                    WaitingPanel.hide();
+                    statPanel.hide();
                     Socket.connect();
                 },
                 (error) => {
@@ -92,6 +94,9 @@ const UserPanel = (function () {
                     Socket.disconnect();
 
                     hide();
+                    StartPanel.hide();
+                    WaitingPanel.hide();
+                    statPanel.hide();
                     SignInForm.show();
                 }
             );
@@ -122,135 +127,115 @@ const UserPanel = (function () {
     return {initialize, show, hide, update};
 })();
 
-const OnlineUsersPanel = (function () {
+const StartPanel = (function () {
     // This function initializes the UI
     const initialize = function () {
+        // Hide it
+        $("#start-panel").hide();
+        $("#next-button").on("click", () => {
+            Socket.ready();
+            hide();
+            WaitingPanel.show();
+        });
+    };
+    // This function shows the panel with the user
+    const show = function () {
+        $("#start-panel").show();
     };
 
-    // This function updates the online users panel
-    const update = function (onlineUsers) {
-        const onlineUsersArea = $("#online-users-area");
-
-        // Clear the online users area
-        onlineUsersArea.empty();
-
-        // Get the current user
-        const currentUser = Authentication.getUser();
-
-        // Add the user one-by-one
-        for (const username in onlineUsers) {
-            if (username != currentUser.username) {
-                onlineUsersArea.append(
-                    $("<div id='username-" + username + "'></div>")
-                        .append(UI.getUserDisplay(onlineUsers[username]))
-                );
-            }
-        }
+    // This function hides the panel
+    const hide = function () {
+        $("#start-panel").hide();
     };
 
-    // This function adds a user in the panel
-    const addUser = function (user) {
-        const onlineUsersArea = $("#online-users-area");
-
-        // Find the user
-        const userDiv = onlineUsersArea.find("#username-" + user.username);
-
-        // Add the user
-        if (userDiv.length == 0) {
-            onlineUsersArea.append(
-                $("<div id='username-" + user.username + "'></div>")
-                    .append(UI.getUserDisplay(user))
-            );
-        }
-    };
-
-    // This function removes a user from the panel
-    const removeUser = function (user) {
-        const onlineUsersArea = $("#online-users-area");
-
-        // Find the user
-        const userDiv = onlineUsersArea.find("#username-" + user.username);
-
-        // Remove the user
-        if (userDiv.length > 0) userDiv.remove();
-    };
-
-    return {initialize, update, addUser, removeUser};
+    return {initialize, show, hide};
 })();
 
-const ChatPanel = (function () {
-    // This stores the chat area
-    let chatArea = null;
-    let time = 0;
-    var myself = 0;
+const WaitingPanel = (function () {
     // This function initializes the UI
     const initialize = function () {
-        // Set up the chat area
-        chatArea = $("#chat-area");
+        // Hide it
+        $("#waiting-panel").hide();
 
-        // Submit event for the input form
-        $("#chat-input-form").on("submit", (e) => {
-            // Do not submit the form
-            e.preventDefault();
+    };
+    const update = function (onlineUsers) {
+        const currentUser = Authentication.getUser();
+        const team = (onlineUsers[currentUser.username].team).toString();
+        const assignedMessage = `You have been assigned to the ${team} team.`;
+        $("#start-button").prop("disabled", false).css("background-color", "#a9364e");
+        $("#waiting-panel .waiting-title").text(assignedMessage);
+        $("#waiting-panel .waiting-hint").hide();
+        $("#start-button").on("click", () => {
+            hide();
+            // start the game
 
-            // Get the message content
-            const content = $("#chat-input").val().trim();
-
-            // Post it
-            Socket.postMessage(content);
-
-            // Clear the message
-            $("#chat-input").val("");
+            // game over
+            gameOverPanel.show();
         });
-        $("#chat-input-form").on("keydown", function (e) {
-            if (e.keyCode != 13) {
-            }
-            myself = 1;
-            Socket.typeMessage();
-        });
-    };
-
-    // This function updates the chatroom area
-    const update = function (chatroom) {
-        // Clear the online users area
-        chatArea.empty();
-
-        // Add the chat message one-by-one
-        for (const message of chatroom) {
-            addMessage(message);
-        }
-    };
-    const typing = function (username) {
-        if (myself == 1)
-            myself = 0;
-        else {
-            document.getElementById("typing").innerHTML = username + " is typing ...";
-            clearTimeout(time);
-            time = setTimeout(clear, 3000);
-        }
-    };
-    const clear = function () {
-        document.getElementById("typing").innerHTML = "";
     }
-
-    // This function adds a new message at the end of the chatroom
-    const addMessage = function (message) {
-        const datetime = new Date(message.datetime);
-        const datetimeString = datetime.toLocaleDateString() + " " +
-            datetime.toLocaleTimeString();
-
-        chatArea.append(
-            $("<div class='chat-message-panel row'></div>")
-                .append(UI.getUserDisplay(message.user))
-                .append($("<div class='chat-message col'></div>")
-                    .append($("<div class='chat-date'>" + datetimeString + "</div>"))
-                    .append($("<div class='chat-content'>" + message.content + "</div>"))
-                )
-        );
-        chatArea.scrollTop(chatArea[0].scrollHeight);
+    // This function shows the form with the user
+    const show = function () {
+        $("#waiting-panel .waiting-title").text("Let’s wait for other users to join the game!");
+        $("#waiting-panel .waiting-hint").show();
+        $("#start-button").prop("disabled", true).css("background-color", "#eeeeee");
+        $("#waiting-panel").show();
     };
 
-    return {initialize, update, addMessage, typing};
+    // This function hides the form
+    const hide = function () {
+        $("#waiting-panel").hide();
+    };
+
+    return {initialize, update, show, hide};
+})();
+
+const gameOverPanel = (function () {
+    // This function initializes the UI
+    const initialize = function () {
+        // Hide it
+        $("#game-over-overlay").hide();
+    };
+
+    const show = function () {
+        $("#game-over-overlay").show();
+        setTimeout(statPanel.update, 2000);
+
+    };
+    const hide = function () {
+        $("#game-over-overlay").hide();
+    };
+
+    return {initialize, show, hide};
+})();
+const statPanel = (function () {
+    const initialize = function () {
+        $("#stat-panel").hide();
+        $("#restart-button").on("click", () => {
+            hide();
+            StartPanel.show();
+        });
+    }
+    const update = function () {
+        gameOverPanel.hide();
+        // Show the winning team.
+        $("#stat-panel #win").text();
+        // Show the statistic
+        $("#stat-panel #stat").text();
+        Socket.restart();
+        show();
+
+    }
+    const show = function () {
+        $("#stat-panel").show();
+    };
+
+    const hide = function () {
+        $("#stat-panel").hide();
+    };
+
+    return {initialize, update, show, hide};
+
+
 })();
 
 const UI = (function () {
@@ -263,7 +248,7 @@ const UI = (function () {
     };
 
     // The components of the UI are put here
-    const components = [SignInForm, UserPanel, OnlineUsersPanel, ChatPanel];
+    const components = [SignInForm, UserPanel, StartPanel, WaitingPanel, gameOverPanel, statPanel];
 
     // This function initializes the UI
     const initialize = function () {

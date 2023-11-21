@@ -1,7 +1,17 @@
 {
-  "tony": {
-    "avatar": "Owl",
-    "name": "Tony Lee",
-    "password": "$2b$10$Yxb2fSgA5RFn9Oz9TxjLLuve/GiPXCs2DWVFhyFDr4qz39qglwp8e"
-  }
+ "Michelle": {
+  "avatar": "Police",
+  "name": "Michelle",
+  "password": "$2b$10$MfjuM.zCsMF0.2y02J.CFeIA6A7teDcWtqVRzjBH6cGnQ6tMMw0x."
+ },
+ "Peter": {
+  "avatar": "Bunnies",
+  "name": "Peter",
+  "password": "$2b$10$wSz8/Voq0vbu19QwwDX4B.ViZyNoPJUrf7/mxKoQXHjMwbEeUNxoq"
+ },
+ "Dou": {
+  "avatar": "Prince",
+  "name": "Dou",
+  "password": "$2b$10$JZu4RU2CaGznHyexMr1ABOzwKsyunJsb8brvQbPh7HhzmuQ.KUcuO"
+ }
 }

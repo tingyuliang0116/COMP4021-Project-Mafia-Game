@@ -136,3 +136,72 @@ app.get("/signout", (req, res) => {
     // Delete when appropriate
     //res.json({status: "error", error: "This endpoint is not yet implemented."});
 });
+
+//
+// ***** Please insert your Lab 6 code here *****
+//
+const {createServer} = require("http");
+const {Server} = require("socket.io");
+const httpServer = createServer(app);
+const io = new Server(httpServer);
+const onlineUsers = {};
+io.use((socket, next) => {
+    chatSession(socket.request, {}, next);
+});
+io.on("connection", (socket) => {
+    if (socket.request.session.user) {
+        const {username, name} = socket.request.session.user;
+        onlineUsers[username] = {name, team: null, ready: false};
+
+    }
+    socket.on("disconnect", () => {
+        if (socket.request.session.user) {
+            const {username} = socket.request.session.user;
+            delete onlineUsers[username];
+
+        }
+    })
+    socket.on("ready", () => {
+        const {username} = socket.request.session.user;
+        onlineUsers[username].ready = true;
+
+        // Check if all players are ready
+        const allPlayersReady = Object.values(onlineUsers).every(
+            (user) => user.ready
+        );
+        if (allPlayersReady) {
+            // Shuffle players' usernames
+            const usernames = Object.keys(onlineUsers);
+            const shuffledUsernames = shuffle(usernames);
+
+            // Assign teams
+            const mafiaIndex = Math.floor(Math.random() * usernames.length);
+            shuffledUsernames.forEach((username, index) => {
+                const team = index === mafiaIndex ? "Mafia" : "Townpeople";
+                onlineUsers[username].team = team;
+            });
+            io.emit("game start", JSON.stringify(onlineUsers));
+
+        }
+    })
+    socket.on("restart", () => {
+        const {username} = socket.request.session.user;
+        onlineUsers[username].ready = false;
+        onlineUsers[username].team = null;
+    })
+})
+
+// Use a web server to listen at port 8000
+httpServer.listen(8000, () => {
+    console.log("The chat server has started...");
+});
+
+// Helper function to shuffle an array
+function shuffle(array) {
+    const shuffledArray = [...array];
+    for (let i = shuffledArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+    }
+    return shuffledArray;
+}

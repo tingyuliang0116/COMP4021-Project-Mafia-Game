@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Abel&display=swap");
+
 :root {
     --material-icons-color: black;
     --field-color: gray;
@@ -5,11 +7,11 @@
     --field-background-hover: #eee;
     --input-background: #eee;
     --overlay-background: rgba(79, 111, 186, 0.8);
-    --overlay-caption-color: #13097a;
+    --overlay-caption-color: #171a6e;
     --overlay-content-background: #3065933b;
 
-    --header-background: linear-gradient(to right, #eb4a40, #f59e72);
-    --main-panel-background: linear-gradient(white, #fde0c5);
+    --header-background: #21439500;
+    --main-panel-background: #42446896;
     --online-users-panel-background: linear-gradient(to right, #fde0c5, #facba6);
     --chat-panel-background: none;
 
@@ -24,13 +26,15 @@
 
     --button-color: white;
     --button-background: #293477;
-    --button-background-hover: #f8b58b;
+    --button-background-hover: #4867eec2;
 }
+
 * {
     font-family: "Abel", sans-serif;
     color: var(--font-color);
     box-sizing: border-box;
 }
+
 body {
     min-width: 600px;
     min-height: 300px;
@@ -41,6 +45,7 @@ body {
     padding: 0;
     margin: 0;
 }
+
 .center {
     text-align: center;
 }
@@ -229,65 +234,13 @@ button.icon:active {
 
 /* Main panel */
 #main-panel {
-    height: calc(100% - 80px);
+    width: 800px;
+    height: calc(100% - 200px);
     background: var(--main-panel-background);
-}
-
-/* Chat area */
-#chat-panel {
-    flex-grow: 1;
-    align-items: stretch;
-    height: 100%;
-    background: var(--chat-panel-background);
-    padding: 0;
-}
-
-#chat-area {
-    height: 100%;
-    align-items: flex-start;
-    justify-content: start;
-    gap: 20px;
-    overflow-y: auto;
-    padding: 10px;
-}
-
-#typing {
-    height: 30px;
-    align-items: flex-start;
-    font-size: 80%;
-    padding: 10px;
-}
-
-.chat-message-panel {
-    align-items: flex-start;
-    padding: 0;
-}
-
-.chat-message {
-    align-items: start;
-    gap: 5px;
-    padding: 0;
-}
-
-.chat-date {
-    font-size: 75%;
-    color: var(--date-color);
-}
-
-/* Online users panel */
-#online-users-panel {
-    flex: 0 0 250px;
-    height: 100%;
-    padding: 0;
-    background: var(--online-users-panel-background);
-}
-
-#online-users-area {
-    flex-grow: 1;
-    width: 100%;
-    align-items: flex-start;
-    justify-content: start;
-    overflow-y: auto;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 /* Signin overlay */
@@ -306,4 +259,154 @@ button.icon:active {
 #edit-user-form {
     width: 270px;
     align-self: stretch;
+}
+
+
+.square {
+    width: 1000px; /* Adjust the size of the square */
+    height: 600px;
+    background-color: var(--main-panel-background); /* Adjust the color as needed */
+    border-radius: 10px;
+    text-align: center;
+    padding: 20px;
+    margin: 20px;
+}
+
+.square-2 {
+    width: 1000px; /* Adjust the size of the square */
+    height: 400px;
+    background-color: var(--main-panel-background); /* Adjust the color as needed */
+    border-radius: 10px;
+    text-align: center;
+    padding: 20px;
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 60px;
+}
+
+.square-3 {
+    width: 1000px; /* Adjust the size of the square */
+    height: 500px;
+    background-color: var(--main-panel-background); /* Adjust the color as needed */
+    border-radius: 10px;
+    text-align: center;
+    padding: 20px;
+    margin: 20px;
+}
+
+button #next-button {
+    background-color: #eeeeee; /* Adjust the color as needed */
+    color: black;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#start-button {
+    background-color: #eeeeee; /* Adjust the color as needed */
+    color: black;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 24px;
+    cursor: pointer;
+    height: 75px;
+    width: 150px;
+    margin: 0 auto;
+}
+
+#restart-button {
+    position: absolute;
+    left: 675px;
+    top: 550px;
+    font-weight: bold;
+    height: 40px;
+    border: 1px solid black;
+    color: var(--button-color);
+    background: var(--button-background);
+    box-shadow: 2px 2px 2px rgb(0, 0, 0, 0.4);
+    padding: 0 20px;
+    transition: 1s background;
+    cursor: pointer;
+}
+#restart-button:hover {
+    background: var(--button-background-hover);
+}
+h1 {
+    text-align: center;
+    color: white;
+}
+
+h2 {
+    margin-top: 30px;
+    text-align: left;
+    color: white;
+}
+
+p {
+    margin-bottom: 10px;
+    color: white;
+    text-align: left;
+}
+
+li {
+    color: white;
+    text-align: left;
+}
+
+.roles {
+    margin-top: 30px;
+    color: white;
+}
+
+.win-conditions {
+    margin-top: 30px;
+    color: white;
+}
+
+.gameoverlay {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgb(23 28 40 / 90%);
+}
+
+#gameover {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    padding: 0;
+    text-align: center;
+    font-size: 20vh;
+    line-height: 100vh;
+    color: red;
+    animation-name: gameover-animation;
+    animation-duration: 2s;
+}
+
+@keyframes gameover-animation {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+#stat {
+    display: none;
+}
+
+#win {
+    font-size: 62px;
+    color: white;
+    padding: 10px;
 }
