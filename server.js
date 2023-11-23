@@ -165,31 +165,13 @@ io.on("connection", (socket) => {
         if (socket.request.session.user) {
             const {username} = socket.request.session.user;
             delete onlineUsers[username];
-
+            checkstatus();
         }
     })
     socket.on("ready", () => {
         const {username} = socket.request.session.user;
         onlineUsers[username].ready = true;
-
-        // Check if all players are ready
-        const allPlayersReady = Object.values(onlineUsers).every(
-            (user) => user.ready
-        );
-        if (allPlayersReady) {
-            // Shuffle players' usernames
-            const usernames = Object.keys(onlineUsers);
-            const shuffledUsernames = shuffle(usernames);
-
-            // Assign teams
-            const mafiaIndex = Math.floor(Math.random() * usernames.length);
-            shuffledUsernames.forEach((username, index) => {
-                const team = index === mafiaIndex ? "Mafia" : "Townpeople";
-                onlineUsers[username].team = team;
-            });
-            io.emit("game start", JSON.stringify(onlineUsers));
-
-        }
+        checkstatus();
     })
     socket.on("restart", () => {
         const {username} = socket.request.session.user;
@@ -211,4 +193,23 @@ function shuffle(array) {
         [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
     }
     return shuffledArray;
+}
+
+function checkstatus() {
+    const allPlayersReady = Object.values(onlineUsers).every(
+        (user) => user.ready
+    );
+    if (allPlayersReady) {
+        // Shuffle players' usernames
+        const usernames = Object.keys(onlineUsers);
+        const shuffledUsernames = shuffle(usernames);
+
+        // Assign teams
+        const mafiaIndex = Math.floor(Math.random() * usernames.length);
+        shuffledUsernames.forEach((username, index) => {
+            const team = index === mafiaIndex ? "Mafia" : "Townpeople";
+            onlineUsers[username].team = team;
+        });
+        io.emit("game start", JSON.stringify(onlineUsers));
+    }
 }
