@@ -20,6 +20,13 @@ const Socket = (function () {
             onlineUsers = JSON.parse(onlineUsers);
             WaitingPanel.update(onlineUsers);
         });
+        socket.on("move", ({x, y}) => {
+            GameMap.otherPlayerMove({x, y})
+        });
+
+        socket.on("moveEnd", () => {
+            GameMap.otherPlayerMoveEnd()
+        });
 
     };
     const ready = function () {
@@ -38,6 +45,17 @@ const Socket = (function () {
         socket.disconnect();
         socket = null;
     };
+    const playerMove = function ({x, y}) {
+        if (socket && socket.connected) {
+            socket.emit("move", {x, y});
+        }
+    };
 
-    return {getSocket, connect, disconnect, ready, restart};
+    const playerMoveEnd = function () {
+        if (socket && socket.connected) {
+            socket.emit("moveEnd");
+        }
+    };
+
+    return {getSocket, connect, disconnect, ready, restart, playerMove, playerMoveEnd};
 })();

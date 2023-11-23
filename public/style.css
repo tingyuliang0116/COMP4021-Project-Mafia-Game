@@ -333,9 +333,11 @@ button #next-button {
     transition: 1s background;
     cursor: pointer;
 }
+
 #restart-button:hover {
     background: var(--button-background-hover);
 }
+
 h1 {
     text-align: center;
     color: white;
@@ -409,4 +411,15 @@ li {
     font-size: 62px;
     color: white;
     padding: 10px;
+}
+#gameMap {
+    background: #111;
+    display: none;
+    place-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+canvas {
+    border-radius: 12px;
 }

@@ -154,6 +154,13 @@ io.on("connection", (socket) => {
         onlineUsers[username] = {name, team: null, ready: false};
 
     }
+    socket.on('move', ({x, y}) => {
+        socket.broadcast.emit('move', {x, y});
+    });
+
+    socket.on('moveEnd', () => {
+        socket.broadcast.emit('moveEnd');
+    });
     socket.on("disconnect", () => {
         if (socket.request.session.user) {
             const {username} = socket.request.session.user;

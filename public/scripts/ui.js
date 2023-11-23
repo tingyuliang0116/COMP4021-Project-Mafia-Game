@@ -135,6 +135,7 @@ const StartPanel = (function () {
         $("#next-button").on("click", () => {
             Socket.ready();
             hide();
+            UserPanel.hide();
             WaitingPanel.show();
         });
     };
@@ -168,9 +169,9 @@ const WaitingPanel = (function () {
         $("#start-button").on("click", () => {
             hide();
             // start the game
-
+            Game.show();
             // game over
-            gameOverPanel.show();
+            //gameOverPanel.show();
         });
     }
     // This function shows the form with the user
@@ -222,6 +223,7 @@ const statPanel = (function () {
         // Show the statistic
         $("#stat-panel #stat").text();
         Socket.restart();
+        UserPanel.show();
         show();
 
     }
@@ -237,7 +239,23 @@ const statPanel = (function () {
 
 
 })();
+const Game = (function () {
+    let mapArea = null
+    let map = null
 
+    const initialize = function () {
+        mapArea = $("#gameMap");
+    }
+
+    const show = function () {
+        $("#gameMap").display="grid";
+        map = GameMap.getMap()
+        mapArea.show()
+    }
+
+    return {initialize, show};
+
+})();
 const UI = (function () {
     // This function gets the user display
     const getUserDisplay = function (user) {
@@ -248,7 +266,7 @@ const UI = (function () {
     };
 
     // The components of the UI are put here
-    const components = [SignInForm, UserPanel, StartPanel, WaitingPanel, gameOverPanel, statPanel];
+    const components = [SignInForm, UserPanel, StartPanel, WaitingPanel, gameOverPanel, statPanel, Game];
 
     // This function initializes the UI
     const initialize = function () {
