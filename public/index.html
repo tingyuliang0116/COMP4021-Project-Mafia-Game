@@ -8,102 +8,103 @@
     <link href="style.css" rel="stylesheet">
 </head>
 <body>
-<div id="gameMap" ></div>
-<div id="header" class="row">
-    <div class="spacer-grow"></div>
-    <div id="user-panel" class="row">
-        <div class="field-content row shadow">
-            <span class="user-avatar"></span>
-            <span class="user-name">-</span>
+<div id="gameMap"></div>
+<div id="background">
+    <div id="header" class="row">
+        <div class="spacer-grow"></div>
+        <div id="user-panel" class="row">
+            <div class="field-content row shadow">
+                <span class="user-avatar"></span>
+                <span class="user-name">-</span>
+            </div>
+            <button id="signout-button" class="icon"><span class="material-icons">logout</span></button>
         </div>
-        <button id="signout-button" class="icon"><span class="material-icons">logout</span></button>
     </div>
-</div>
-<div class="row">
-    <div id=start-panel class="square">
-        <h1>Welcome to the Mafia game !</h1>
-        <h2>Game Description:</h2>
-        <p>In "Mafia Game," two powerful factions clash in a fight for dominance and survival. Players are randomly
-            assigned to one of two teams: the cunning mafia or the resourceful townspeople. Each team has unique
-            objectives and must outmaneuver their opponents to claim victory.</p>
-        <div class="roles">
-            <h2>Roles:</h2>
-            <ul>
-                <li>
-                    <p>Mafia Team: The mafia consists of one player, representing an organized criminal
-                        syndicate. It is tasked with eliminating the townspeople and disrupting their efforts to collect
-                        items.</p>
-                </li>
-                <li>Townspeople Team: The townspeople consist of multiple players, representing the
-                    innocent residents of the town. They must work together to find and collect all the items while
-                    evading the deadly attacks of the mafia.
-                </li>
-            </ul>
+    <div class="row">
+        <div id=start-panel class="square">
+            <h1>Welcome to the Mafia game !</h1>
+            <h2>Game Description:</h2>
+            <p>In "Mafia Game," two powerful factions clash in a fight for dominance and survival. Players are randomly
+                assigned to one of two teams: the cunning mafia or the resourceful townspeople. Each team has unique
+                objectives and must outmaneuver their opponents to claim victory.</p>
+            <div class="roles">
+                <h2>Roles:</h2>
+                <ul>
+                    <li>
+                        <p>Mafia Team: The mafia consists of one player, representing an organized criminal
+                            syndicate. It is tasked with eliminating the townspeople and disrupting their efforts to
+                            collect
+                            items.</p>
+                    </li>
+                    <li>Townspeople Team: The townspeople consist of multiple players, representing the
+                        innocent residents of the town. They must work together to find and collect all the items while
+                        evading the deadly attacks of the mafia.
+                    </li>
+                </ul>
+            </div>
+            <div class="win-conditions">
+                <h2>Win Conditions:</h2>
+                <ul>
+                    <li>Mafia Victory: The mafia wins if they eliminate all the townspeople before they can
+                        collect all the items.
+                    </li>
+                    <li>Townspeople Victory: The townspeople win if they successfully collect all the items
+                        before the mafia wipes them out.
+                    </li>
+                </ul>
+            </div>
+            <button id="next-button">Next</button>
         </div>
-        <div class="win-conditions">
-            <h2>Win Conditions:</h2>
-            <ul>
-                <li>Mafia Victory: The mafia wins if they eliminate all the townspeople before they can
-                    collect all the items.
-                </li>
-                <li>Townspeople Victory: The townspeople win if they successfully collect all the items
-                    before the mafia wipes them out.
-                </li>
-            </ul>
+    </div>
+    <div class="row">
+        <div id="stat-panel" class="square-3">
+            <div id="win"></div>
+            <div id="stat"></div>
+            <button id="restart-button">Restart</button>
         </div>
-        <button id="next-button">Next</button>
+    </div>
+    <div class="row">
+        <div id="waiting-panel" class="square-2">
+            <h1 class="waiting-title"></h1>
+            <button id="start-button">Start</button>
+            <h4 class="waiting-hint">You will be randomly assigned to the team after the start button becomes red.</h4>
+        </div>
+    </div>
+    <div id="signin-overlay" class="overlay row">
+        <div class="content shadow row">
+            <form id="signin-form" class="col">
+                <div class="caption">SIGN IN WITH YOUR ACCOUNT</div>
+                <div class="spacer-0"></div>
+                <input id="signin-username" placeholder="Enter your username"></input>
+                <input id="signin-password" type="password" placeholder="Enter your password"></input>
+                <div class="spacer-0"></div>
+                <button type="submit">Sign In</button>
+                <div id="signin-message" class="warning center"></div>
+                <div class="spacer-grow"></div>
+            </form>
+
+            <div class="spacer-0"></div>
+
+            <form id="register-form" class="col">
+                <div class="caption">OR, REGISTER IF YOU DO NOT HAVE ONE</div>
+                <div class="spacer-0"></div>
+                <input id="register-username" maxlength="10" placeholder="Enter your username"></input>
+                <select id="register-avatar">
+                    <option value="">Select your avatar</option>
+                </select>
+                <input id="register-name" maxlength="16" placeholder="Enter your name"></input>
+                <input id="register-password" type="password" placeholder="Enter your password"></input>
+                <input id="register-confirm" type="password" placeholder="Enter your password again"></input>
+                <div class="spacer-0"></div>
+                <button type="submit">Register</button>
+                <div id="register-message" class="warning center"></div>
+            </form>
+        </div>
+    </div>
+    <div id="game-over-overlay" class="gameoverlay">
+        <div id="gameover">Game Over</div>
     </div>
 </div>
-<div class="row">
-    <div id="stat-panel" class="square-3">
-        <div id="win"></div>
-        <div id="stat"></div>
-        <button id="restart-button">Restart</button>
-    </div>
-</div>
-<div class="row">
-    <div id="waiting-panel" class="square-2">
-        <h1 class="waiting-title"></h1>
-        <button id="start-button">Start</button>
-        <h4 class="waiting-hint">You will be randomly assigned to the team after the start button becomes red.</h4>
-    </div>
-</div>
-
-<div id="signin-overlay" class="overlay row">
-    <div class="content shadow row">
-        <form id="signin-form" class="col">
-            <div class="caption">SIGN IN WITH YOUR ACCOUNT</div>
-            <div class="spacer-0"></div>
-            <input id="signin-username" placeholder="Enter your username"></input>
-            <input id="signin-password" type="password" placeholder="Enter your password"></input>
-            <div class="spacer-0"></div>
-            <button type="submit">Sign In</button>
-            <div id="signin-message" class="warning center"></div>
-            <div class="spacer-grow"></div>
-        </form>
-
-        <div class="spacer-0"></div>
-
-        <form id="register-form" class="col">
-            <div class="caption">OR, REGISTER IF YOU DO NOT HAVE ONE</div>
-            <div class="spacer-0"></div>
-            <input id="register-username" maxlength="10" placeholder="Enter your username"></input>
-            <select id="register-avatar">
-                <option value="">Select your avatar</option>
-            </select>
-            <input id="register-name" maxlength="16" placeholder="Enter your name"></input>
-            <input id="register-password" type="password" placeholder="Enter your password"></input>
-            <input id="register-confirm" type="password" placeholder="Enter your password again"></input>
-            <div class="spacer-0"></div>
-            <button type="submit">Register</button>
-            <div id="register-message" class="warning center"></div>
-        </form>
-    </div>
-</div>
-<div id="game-over-overlay" class="gameoverlay">
-    <div id="gameover">Game Over</div>
-</div>
-
 </div>
 
 <script src="/socket.io/socket.io.min.js"></script>

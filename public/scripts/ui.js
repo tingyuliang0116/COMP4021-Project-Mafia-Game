@@ -157,7 +157,15 @@ const WaitingPanel = (function () {
     const initialize = function () {
         // Hide it
         $("#waiting-panel").hide();
+        $("#start-button").on("click", () => {
+            // Game Start
+            hide();
+            $("#background").hide();
+            Game.show();
 
+            // Game End
+            setTimeout(gameOverPanel.show, 5000);
+        });
     };
     const update = function (onlineUsers) {
         const currentUser = Authentication.getUser();
@@ -166,13 +174,7 @@ const WaitingPanel = (function () {
         $("#start-button").prop("disabled", false).css("background-color", "#a9364e");
         $("#waiting-panel .waiting-title").text(assignedMessage);
         $("#waiting-panel .waiting-hint").hide();
-        $("#start-button").on("click", () => {
-            hide();
-            // start the game
-            Game.show();
-            // game over
-            //gameOverPanel.show();
-        });
+
     }
     // This function shows the form with the user
     const show = function () {
@@ -198,6 +200,8 @@ const gameOverPanel = (function () {
     };
 
     const show = function () {
+        $("#background").show();
+        Game.hide();
         $("#game-over-overlay").show();
         setTimeout(statPanel.update, 2000);
 
@@ -237,7 +241,6 @@ const statPanel = (function () {
 
     return {initialize, update, show, hide};
 
-
 })();
 const Game = (function () {
     let mapArea = null
@@ -248,12 +251,17 @@ const Game = (function () {
     }
 
     const show = function () {
-        $("#gameMap").display="grid";
+        map = null;
+        $("#gameMap").css("display", "flex");
         map = GameMap.getMap()
         mapArea.show()
     }
 
-    return {initialize, show};
+    const hide = function () {
+        $("#gameMap").hide();
+    }
+
+    return {initialize, show, hide};
 
 })();
 const UI = (function () {
