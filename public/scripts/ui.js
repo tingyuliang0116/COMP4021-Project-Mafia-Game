@@ -252,6 +252,7 @@ const Game = (function () {
 
     const show = function () {
         map = null;
+        $("#gameMap").empty();
         $("#gameMap").css("display", "flex");
         map = GameMap.getMap()
         mapArea.show()
