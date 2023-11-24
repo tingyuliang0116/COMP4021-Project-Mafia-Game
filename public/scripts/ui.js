@@ -169,18 +169,17 @@ const WaitingPanel = (function () {
             hide();
             $("#background").hide();
             Game.show();
+
+            //setTimeout(gameOverPanel.show('Mafia', onlineUsers), 100000);
         });
     };
     const update = function (onlineUsers) {
         const currentUser = Authentication.getUser();
         const team = (onlineUsers[currentUser.username].team).toString();
-        // uncomment this to view the game end screen
-        // gameOverPanel.show('Mafia', onlineUsers)
         const assignedMessage = `You have been assigned to the ${team} team.`;
         $("#start-button").prop("disabled", false).css("background-color", "#a9364e");
         $("#waiting-panel .waiting-title").text(assignedMessage);
         $("#waiting-panel .waiting-hint").hide();
-
     }
     // This function shows the form with the user
     const show = function () {
@@ -246,10 +245,8 @@ const statPanel = (function () {
         // Show the winning team.
         if (isWon) {
             $("#stat-panel #gameover").text("You Win!");
-            $("#stat-panel #gameover").css("color", "teal")
         } else {
             $("#stat-panel #gameover").text("You Lose!");
-            $("#stat-panel #gameover").css("color", "red")
         }
         // Show the statistic
         $("#stat-panel #stat").text();
