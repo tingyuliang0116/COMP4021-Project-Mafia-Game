@@ -164,12 +164,14 @@ const WaitingPanel = (function () {
             Game.show();
 
             // Game End
-            setTimeout(gameOverPanel.show, 5000);
+           // setTimeout(gameOverPanel.show, 5000);
         });
     };
     const update = function (onlineUsers) {
         const currentUser = Authentication.getUser();
         const team = (onlineUsers[currentUser.username].team).toString();
+        // uncomment this to view the game end screen
+        //gameOverPanel.show('Mafia', onlineUsers)
         const assignedMessage = `You have been assigned to the ${team} team.`;
         $("#start-button").prop("disabled", false).css("background-color", "#a9364e");
         $("#waiting-panel .waiting-title").text(assignedMessage);
@@ -199,11 +201,22 @@ const gameOverPanel = (function () {
         $("#game-over-overlay").hide();
     };
 
-    const show = function () {
+    const show = function (winningTeam, onlineUsers) {
         $("#background").show();
-        Game.hide();
+        //Game.hide();
+        //depends on player's team, show different end game message display
+        const currentUser = Authentication.getUser();
+        const team = (onlineUsers[currentUser.username].team).toString();
+        if(winningTeam === 'Mafia'){
+            $("#game-over-overlay #winningTeam").text("Mafia Win!") 
+        }else{
+            $("#game-over-overlay #winningTeam").text("Townpeople Win!")
+        }
+        const isWon = winningTeam === team
         $("#game-over-overlay").show();
-        setTimeout(statPanel.update, 2000);
+        setTimeout(function(){
+            statPanel.update(isWon)
+        }, 2000);
 
     };
     const hide = function () {
@@ -220,10 +233,16 @@ const statPanel = (function () {
             StartPanel.show();
         });
     }
-    const update = function () {
+    const update = function (isWon) {
         gameOverPanel.hide();
         // Show the winning team.
-        $("#stat-panel #win").text();
+        if(isWon){
+            $("#stat-panel #gameover").text("You Win!");
+            $("#stat-panel #gameover").css("color", "teal")
+        }else{
+            $("#stat-panel #gameover").text("You Lose!");
+            $("#stat-panel #gameover").css("color", "red")
+        }
         // Show the statistic
         $("#stat-panel #stat").text();
         Socket.restart();
