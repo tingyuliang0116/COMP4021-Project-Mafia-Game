@@ -65,6 +65,8 @@ GameMap = (function () {
         const playerMoved = movePlayer(pressedKeys, player.sprite);
         if (playerMoved) {
             Socket.playerMove({x: player.sprite.x, y: player.sprite.y, playerId: selfId});
+            //try update item collected
+            //Socket.collectItem()
             player.movedLastFrame = true;
         } else {
             if (player.movedLastFrame) {

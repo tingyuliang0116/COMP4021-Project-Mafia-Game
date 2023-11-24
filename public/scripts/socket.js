@@ -29,7 +29,10 @@ const Socket = (function () {
         socket.on("moveEnd", (playerId) => {
             GameMap.otherPlayerMoveEnd(playerId)
         });
-
+        //receive game end notice
+        socket.on("game end", (winningTeam) => {
+            gameOverPanel.show(winningTeam, users)
+        })
     };
     const ready = function () {
         if (socket && socket.connected) {
@@ -66,5 +69,17 @@ const Socket = (function () {
         }
     };
 
-    return {getSocket, connect, disconnect, ready, restart, getUsers, getSelfId, playerMove, playerMoveEnd};
+    const collectItem = function () {
+        if (socket && socket.connected) {
+            socket.emit("collect item");
+        }
+    }
+
+    const killPlayer = function () {
+        if (socket && socket.connected) {
+            socket.emit("kill player");
+        }
+    }
+
+    return {getSocket, connect, disconnect, ready, restart, getUsers, getSelfId, playerMove, playerMoveEnd, collectItem, killPlayer};
 })();

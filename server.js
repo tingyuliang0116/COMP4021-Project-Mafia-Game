@@ -145,6 +145,12 @@ const {Server} = require("socket.io");
 const httpServer = createServer(app);
 const io = new Server(httpServer);
 const onlineUsers = {};
+
+const totalItems = 10; //set this when create items
+
+let totalScore = 0;
+let totalTownPeople = 0; 
+
 io.use((socket, next) => {
     chatSession(socket.request, {}, next);
 });
@@ -152,8 +158,8 @@ io.on("connection", (socket) => {
     if (socket.request.session.user) {
         const {username, name} = socket.request.session.user;
         onlineUsers[username] = {name, team: null, ready: false, playerId: socket.id};
-
     }
+
     socket.on('move', ({x, y, playerId}) => {
         socket.broadcast.emit('move', {x, y, playerId});
     });
@@ -161,6 +167,21 @@ io.on("connection", (socket) => {
     socket.on('moveEnd', (playerId) => {
         socket.broadcast.emit('moveEnd', playerId);
     });
+    //call this when player collect item
+    socket.on('collect item', () => {
+        totalScore += 1
+        if(totalScore === totalItems){
+            io.emit('game end', 'Townpeople');
+        }
+    })
+    //call this when kill player
+    socket.on('kill player', () => {
+        totalTownPeople -= 1
+        if(totalTownPeople === 0){
+            socket.broadcast.emit('game end', 'Mafia');
+        }
+    })
+
     socket.on("disconnect", () => {
         if (socket.request.session.user) {
             const {username} = socket.request.session.user;
@@ -202,6 +223,7 @@ function checkstatus() {
     if (allPlayersReady) {
         // Shuffle players' usernames
         const usernames = Object.keys(onlineUsers);
+        totalTownPeople = usernames.length -1 
         const shuffledUsernames = shuffle(usernames);
 
         // Assign teams
