@@ -12,17 +12,23 @@ let otherPlayers = {};
 let pressedKeys = [];
 let config = {};
 let onlineUsers = {};
-
+const item = {width: 32, height: 32};
+const ghost = {width:1024, height: 163, path: './dead.png'}; //when the player is dead 
+const players = {
+    'player1': {width: 84, height: 128, exist: false, path: './player.png'}, 
+    'player2': {width: 166, height: 270, exist:false, path: '/player2.png'},
+    'player3': {width: 128, height: 163, exist:false, path: '/player3.png'}
+};
 GameMap = (function () {
     function preload() {
         this.load.image('ship', './ship.png');
-        this.load.spritesheet(`player`, './player.png', {
-            frameWidth: PLAYER_SPRITE_WIDTH,
-            frameHeight: PLAYER_SPRITE_HEIGHT,
+        this.load.spritesheet(`player`, players.player1.path, {
+            frameWidth: players.player1.width,
+            frameHeight:  players.player1.height,
         });
-        this.load.spritesheet(`otherPlayer`, './player.png', {
-            frameWidth: PLAYER_SPRITE_WIDTH,
-            frameHeight: PLAYER_SPRITE_HEIGHT,
+        this.load.spritesheet(`otherPlayer`, players.player2.path, {
+            frameWidth: players.player2.width,
+            frameHeight: players.player2.height,
         });
     }
 
@@ -34,7 +40,8 @@ GameMap = (function () {
                 player.sprite = this.add.sprite(PLAYER_START_X, PLAYER_START_Y, 'player');
                 player.sprite.displayHeight = PLAYER_HEIGHT;
                 player.sprite.displayWidth = PLAYER_WIDTH;
-            }else {
+            }
+            else {
                 const otherPlayerSprite = this.add.sprite(PLAYER_START_X, PLAYER_START_Y, `otherPlayer`);
                 otherPlayerSprite.displayHeight = PLAYER_HEIGHT;
                 otherPlayerSprite.displayWidth = PLAYER_WIDTH;
@@ -49,7 +56,12 @@ GameMap = (function () {
             frameRate: 24,
             reapeat: -1,
         });
-
+        this.anims.create({
+            key: 'running',
+            frames: this.anims.generateFrameNumbers(`otherPlayer`),
+            frameRate: 24,
+            reapeat: -1,
+        });
         this.input.keyboard.on('keydown', (e) => {
             if (!pressedKeys.includes(e.code)) {
                 pressedKeys.push(e.code);

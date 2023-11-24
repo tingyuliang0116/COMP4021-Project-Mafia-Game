@@ -13,5 +13,15 @@
   "avatar": "Prince",
   "name": "Dou",
   "password": "$2b$10$JZu4RU2CaGznHyexMr1ABOzwKsyunJsb8brvQbPh7HhzmuQ.KUcuO"
+ },
+ "hey": {
+  "avatar": "Bunnies",
+  "name": "fd",
+  "password": "$2b$10$bkSnfsXOfXW0ns4/eJwbne/irTHMg.MEMjMiPHPQvJahHnhPi65Py"
+ },
+ "michelle": {
+  "avatar": "Man turban",
+  "name": "sfasd",
+  "password": "$2b$10$k9.iGd1cidN5L2btrIIWpuiQN6ULJ31dM6edkhlg1yOG2B.2mZKmG"
  }
 }
