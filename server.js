@@ -150,7 +150,8 @@ const totalItems = 10; //set this when create items
 
 let totalScore = 0;
 let totalTownPeople = 0; 
-
+const yourJson = require('./data/users.json'); // length of the users json for this server
+const length = Object.keys(yourJson).length; // so u can keep track of the users signed in 
 io.use((socket, next) => {
     chatSession(socket.request, {}, next);
 });

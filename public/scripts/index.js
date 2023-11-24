@@ -12,7 +12,7 @@ let otherPlayers = {};
 let pressedKeys = [];
 let config = {};
 let onlineUsers = {};
-const item = {width: 32, height: 32};
+const item = {width: 32, height: 32, path: "./item.png"};
 const ghost = {width:1024, height: 163, path: './dead.png'}; //when the player is dead 
 const players = {
     'player1': {width: 84, height: 128, exist: false, path: './player.png'}, 
@@ -22,14 +22,36 @@ const players = {
 GameMap = (function () {
     function preload() {
         this.load.image('ship', './ship.png');
-        this.load.spritesheet(`player`, players.player1.path, {
-            frameWidth: players.player1.width,
-            frameHeight:  players.player1.height,
-        });
-        this.load.spritesheet(`otherPlayer`, players.player2.path, {
-            frameWidth: players.player2.width,
-            frameHeight: players.player2.height,
-        });
+        for(var key in players){
+            if(players[key].exist == false )
+            {
+                players[key].exist = true;
+                this.load.spritesheet(`player`, players[key].path, {
+                frameWidth: players[key].width,
+                frameHeight:  players[key].height,
+                });
+                break;
+            }
+        }
+        for(var key in players){
+            if(players[key].exist == false )
+            {
+                players[key].exist = true;
+                this.load.spritesheet(`otherPlayer`, players[key].path, {
+                frameWidth: players[key].width,
+                frameHeight:  players[key].height,
+                });
+                break;
+            }
+        }
+        this.load.spritesheet(`item`, item.path, {
+            frameWidth: item.width,
+            frameHeight: item.height,
+            });
+        // this.load.spritesheet(`otherPlayer`, players.player2.path, {
+        //     frameWidth: players.player2.width,
+        //     frameHeight: players.player2.height,
+        // });
     }
 
     function create() {
@@ -49,7 +71,7 @@ GameMap = (function () {
                 otherPlayers.add(otherPlayerSprite)
             }
         })
-
+        this.add.sprite(PLAYER_START_X, PLAYER_START_Y + 100, 'item');
         this.anims.create({
             key: 'running',
             frames: this.anims.generateFrameNumbers(`player`),
