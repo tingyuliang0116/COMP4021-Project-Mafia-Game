@@ -1,3 +1,9 @@
+const sounds = {
+    game: new Audio("game.mp3"),
+    collect: new Audio("collect.mp3"),
+    gameover: new Audio("gameover.mp3"),
+    background: new Audio("background.mp3")
+};
 const SignInForm = (function () {
     // This function initializes the UI
     const initialize = function () {
@@ -20,6 +26,7 @@ const SignInForm = (function () {
             Authentication.signin(username, password,
                 () => {
                     hide();
+                    sounds.background.play();
                     UserPanel.update(Authentication.getUser());
                     UserPanel.show();
                     StartPanel.show();
@@ -92,7 +99,7 @@ const UserPanel = (function () {
             Authentication.signout(
                 () => {
                     Socket.disconnect();
-
+                    sounds.background.pause();
                     hide();
                     StartPanel.hide();
                     WaitingPanel.hide();
@@ -162,16 +169,13 @@ const WaitingPanel = (function () {
             hide();
             $("#background").hide();
             Game.show();
-
-            // Game End
-           // setTimeout(gameOverPanel.show, 5000);
         });
     };
     const update = function (onlineUsers) {
         const currentUser = Authentication.getUser();
         const team = (onlineUsers[currentUser.username].team).toString();
         // uncomment this to view the game end screen
-        //gameOverPanel.show('Mafia', onlineUsers)
+        // gameOverPanel.show('Mafia', onlineUsers)
         const assignedMessage = `You have been assigned to the ${team} team.`;
         $("#start-button").prop("disabled", false).css("background-color", "#a9364e");
         $("#waiting-panel .waiting-title").text(assignedMessage);
@@ -202,19 +206,21 @@ const gameOverPanel = (function () {
     };
 
     const show = function (winningTeam, onlineUsers) {
+        sounds.game.pause();
+        sounds.gameover.play();
         $("#background").show();
         Game.hide();
         //depends on player's team, show different end game message display
         const currentUser = Authentication.getUser();
         const team = (onlineUsers[currentUser.username].team).toString();
-        if(winningTeam === 'Mafia'){
-            $("#game-over-overlay #winningTeam").text("Mafia Win!") 
-        }else{
+        if (winningTeam === 'Mafia') {
+            $("#game-over-overlay #winningTeam").text("Mafia Win!")
+        } else {
             $("#game-over-overlay #winningTeam").text("Townpeople Win!")
         }
         const isWon = winningTeam === team
         $("#game-over-overlay").show();
-        setTimeout(function(){
+        setTimeout(function () {
             statPanel.update(isWon)
         }, 2000);
 
@@ -234,12 +240,14 @@ const statPanel = (function () {
         });
     }
     const update = function (isWon) {
+        sounds.gameover.pause();
+        sounds.background.play();
         gameOverPanel.hide();
         // Show the winning team.
-        if(isWon){
+        if (isWon) {
             $("#stat-panel #gameover").text("You Win!");
             $("#stat-panel #gameover").css("color", "teal")
-        }else{
+        } else {
             $("#stat-panel #gameover").text("You Lose!");
             $("#stat-panel #gameover").css("color", "red")
         }
@@ -270,6 +278,8 @@ const Game = (function () {
     }
 
     const show = function () {
+        sounds.background.pause();
+        sounds.game.play();
         map = null;
         $("#gameMap").empty();
         $("#gameMap").css("display", "flex");
