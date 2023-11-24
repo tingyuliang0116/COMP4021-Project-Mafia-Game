@@ -203,7 +203,7 @@ const gameOverPanel = (function () {
 
     const show = function (winningTeam, onlineUsers) {
         $("#background").show();
-        //Game.hide();
+        Game.hide();
         //depends on player's team, show different end game message display
         const currentUser = Authentication.getUser();
         const team = (onlineUsers[currentUser.username].team).toString();
