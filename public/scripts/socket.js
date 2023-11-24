@@ -1,7 +1,8 @@
 const Socket = (function () {
     // This stores the current Socket.IO socket
     let socket = null;
-
+    let users = {};
+    // let selfId = null;
     // This function gets the socket from the module
     const getSocket = function () {
         return socket;
@@ -18,14 +19,15 @@ const Socket = (function () {
         });
         socket.on("game start", (onlineUsers) => {
             onlineUsers = JSON.parse(onlineUsers);
+            users = onlineUsers
             WaitingPanel.update(onlineUsers);
         });
-        socket.on("move", ({x, y}) => {
-            GameMap.otherPlayerMove({x, y})
+        socket.on("move", ({x, y, playerId}) => {
+            GameMap.otherPlayerMove({x, y, playerId})
         });
 
-        socket.on("moveEnd", () => {
-            GameMap.otherPlayerMoveEnd()
+        socket.on("moveEnd", (playerId) => {
+            GameMap.otherPlayerMoveEnd(playerId)
         });
 
     };
@@ -40,22 +42,29 @@ const Socket = (function () {
         }
     }
 
+    const getUsers = function () {
+        console.log(users)
+        return users
+    }
+
+    const getSelfId = function () {
+        return socket.id
+    }
     // This function disconnects the socket from the server
     const disconnect = function () {
         socket.disconnect();
         socket = null;
     };
-    const playerMove = function ({x, y}) {
+    const playerMove = function ({x, y, playerId}) {
         if (socket && socket.connected) {
-            socket.emit("move", {x, y});
+            socket.emit("move", {x, y, playerId});
+        }
+    };
+    const playerMoveEnd = function (playerId) {
+        if (socket && socket.connected) {
+            socket.emit("moveEnd", playerId);
         }
     };
 
-    const playerMoveEnd = function () {
-        if (socket && socket.connected) {
-            socket.emit("moveEnd");
-        }
-    };
-
-    return {getSocket, connect, disconnect, ready, restart, playerMove, playerMoveEnd};
+    return {getSocket, connect, disconnect, ready, restart, getUsers, getSelfId, playerMove, playerMoveEnd};
 })();

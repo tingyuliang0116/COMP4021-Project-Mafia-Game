@@ -151,15 +151,15 @@ io.use((socket, next) => {
 io.on("connection", (socket) => {
     if (socket.request.session.user) {
         const {username, name} = socket.request.session.user;
-        onlineUsers[username] = {name, team: null, ready: false};
+        onlineUsers[username] = {name, team: null, ready: false, playerId: socket.id};
 
     }
-    socket.on('move', ({x, y}) => {
-        socket.broadcast.emit('move', {x, y});
+    socket.on('move', ({x, y, playerId}) => {
+        socket.broadcast.emit('move', {x, y, playerId});
     });
 
-    socket.on('moveEnd', () => {
-        socket.broadcast.emit('moveEnd');
+    socket.on('moveEnd', (playerId) => {
+        socket.broadcast.emit('moveEnd', playerId);
     });
     socket.on("disconnect", () => {
         if (socket.request.session.user) {
