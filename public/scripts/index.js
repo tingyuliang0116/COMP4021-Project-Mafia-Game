@@ -119,7 +119,9 @@ GameMap = (function () {
     const otherPlayerMoveEnd = function (playerId) {
         console.log('revieved moved');
         otherPlayers.getChildren().forEach((otherPlayer) => {
-            otherPlayer.moving = false;
+            if(otherPlayer.playerId === playerId){
+                otherPlayer.moving = false;
+            }
         })
     }
 
