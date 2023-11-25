@@ -149,7 +149,7 @@ const onlineUsers = {};
 const totalItems = 10; //set this when create items
 
 let totalScore = 0;
-let totalTownPeople = 0; 
+let totalTownPeople = 0;
 const yourJson = require('./data/users.json'); // length of the users json for this server
 const length = Object.keys(yourJson).length; // so u can keep track of the users signed in 
 io.use((socket, next) => {
@@ -158,7 +158,7 @@ io.use((socket, next) => {
 io.on("connection", (socket) => {
     if (socket.request.session.user) {
         const {username, name} = socket.request.session.user;
-        onlineUsers[username] = {name, team: null, ready: false, playerId: socket.id};
+        onlineUsers[username] = {name, team: null, ready: false, playerId: socket.id, statistic: 0};
     }
 
     socket.on('move', ({x, y, playerId}) => {
@@ -170,15 +170,19 @@ io.on("connection", (socket) => {
     });
     //call this when player collect item
     socket.on('collect item', () => {
+        const {username, name} = socket.request.session.user;
+        onlineUsers[username].statistic += 1;
         totalScore += 1
-        if(totalScore === totalItems){
+        if (totalScore === totalItems) {
             io.emit('game end', 'Townpeople');
         }
     })
     //call this when kill player
     socket.on('kill player', () => {
+        const {username, name} = socket.request.session.user;
+        onlineUsers[username].statistic += 1;
         totalTownPeople -= 1
-        if(totalTownPeople === 0){
+        if (totalTownPeople === 0) {
             socket.broadcast.emit('game end', 'Mafia');
         }
     })
@@ -199,6 +203,7 @@ io.on("connection", (socket) => {
         const {username} = socket.request.session.user;
         onlineUsers[username].ready = false;
         onlineUsers[username].team = null;
+        onlineUsers[username].statistic = 0;
     })
 })
 
@@ -224,7 +229,7 @@ function checkstatus() {
     if (allPlayersReady) {
         // Shuffle players' usernames
         const usernames = Object.keys(onlineUsers);
-        totalTownPeople = usernames.length -1 
+        totalTownPeople = usernames.length - 1
         const shuffledUsernames = shuffle(usernames);
 
         // Assign teams

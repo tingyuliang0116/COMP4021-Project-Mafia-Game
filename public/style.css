@@ -36,20 +36,23 @@
 }
 
 body {
-    height: 100%;
+    min-width: 600px;
+    min-height: 300px;
+    height: 100vh;
+    padding: 0;
     margin: 0;
 }
 
 #background {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 9999;
     background-image: url('background.jpg'); /* Replace 'background.jpg' with the path to your image file */
     background-size: cover;
     background-position: center;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+
 }
 
 .center {
@@ -219,6 +222,11 @@ button.icon:active {
     height: 80px;
     background: var(--header-background);
     padding: 0 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999;
 }
 
 #title {
@@ -279,32 +287,29 @@ button.icon:active {
     border-radius: 10px;
     text-align: center;
     padding: 20px;
+    max-width: 1000px; /* Adjust the maximum width as desired */
+
 
 }
 
 .square-2 {
-    width: 60%; /* Adjust the size of the square */
-    height: 400px;
+    width: 100%; /* Adjust the size of the square */
+    height: auto;
     background-color: var(--main-panel-background); /* Adjust the color as needed */
     border-radius: 10px;
     text-align: center;
-    padding: 20px;
-    margin: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 60px;
+    padding: 40px;
+    max-width: 1000px; /* Adjust the maximum width as desired */
 }
 
 .square-3 {
-    width: 40%; /* Adjust the size of the square */
-    height: 300px;
+    width: 100%; /* Adjust the size of the square */
+    height: auto;
     background-color: var(--main-panel-background); /* Adjust the color as needed */
     border-radius: 10px;
     text-align: center;
-    padding: 20px;
-    margin: 20px;
-    margin-top: 100px;
+    padding: 60px;
+    max-width: 1000px; /* Adjust the maximum width as desired */
 }
 
 button #next-button {
@@ -398,10 +403,18 @@ li {
     animation-duration: 2s;
 }
 
+#stat {
+    text-align: left;
+    display: flex;
+    color: #a9b9ff;
+    margin-bottom: 50px;
+}
+
+
 #gameover {
     text-align: center;
     font-size: 10vh;
-    padding: 30px;
+    margin-bottom: 40px;
     color: white;
 }
 
@@ -421,9 +434,6 @@ li {
     }
 }
 
-#stat {
-    display: none;
-}
 
 #win {
     font-size: 62px;

@@ -8,5 +8,10 @@
   "avatar": "Police",
   "name": "michelle",
   "password": "$2b$10$lDSQFCgEjORk42odWvxAKuKl1VNk7czBHm1Xnr3cp7cM3wCNMB7ne"
+ },
+ "Peter": {
+  "avatar": "Bunnies",
+  "name": "Peter",
+  "password": "$2b$10$LENG.j.BggN4GDeiK2fbseFvTHH8mqC1h3UWgVv838ZXmmIPzKDtG"
  }
 }

@@ -170,7 +170,7 @@ const WaitingPanel = (function () {
             $("#background").hide();
             Game.show();
 
-            //setTimeout(gameOverPanel.show('Mafia', onlineUsers), 100000);
+            setTimeout(gameOverPanel.show('Mafia', onlineUsers), 100000);
         });
     };
     const update = function (onlineUsers) {
@@ -220,7 +220,7 @@ const gameOverPanel = (function () {
         const isWon = winningTeam === team
         $("#game-over-overlay").show();
         setTimeout(function () {
-            statPanel.update(isWon)
+            statPanel.update(isWon, onlineUsers)
         }, 2000);
 
     };
@@ -234,11 +234,12 @@ const statPanel = (function () {
     const initialize = function () {
         $("#stat-panel").hide();
         $("#restart-button").on("click", () => {
+            $("#stat-panel #stat").empty();
             hide();
             StartPanel.show();
         });
     }
-    const update = function (isWon) {
+    const update = function (isWon, onlineUsers) {
         sounds.gameover.pause();
         sounds.background.play();
         gameOverPanel.hide();
@@ -248,8 +249,29 @@ const statPanel = (function () {
         } else {
             $("#stat-panel #gameover").text("You Lose!");
         }
-        // Show the statistic
-        $("#stat-panel #stat").text();
+        var mafiaTeamElement = $("<div><strong>Mafia Team:</strong></div>");
+        var townpeopleTeamElement = $("<div><strong>Townpeople Team:</strong></div>");
+        mafiaTeamElement.css("padding-right","30px");
+        townpeopleTeamElement.css("padding-left","30px");
+        $("#stat-panel #stat").append(mafiaTeamElement, townpeopleTeamElement);
+        Object.keys(onlineUsers).forEach(function (username) {
+            var name = onlineUsers[username].name;
+            var statistic = onlineUsers[username].statistic;
+            var team = onlineUsers[username].team;
+            if (team === "Mafia") {
+                // Create a new HTML element for each player's information in the "Mafia Team" section
+                var playerElement = $("<div></div>").text(name + " killed " + statistic + " people");
+                playerElement.css("padding-left", "20px");
+                // Append the player element to the "Mafia Team" section
+                mafiaTeamElement.append(playerElement);
+            } else if (team === "Townpeople") {
+                // Create a new HTML element for each player's information in the "Townpeople Team" section
+                var playerElement = $("<div></div>").text(name + " collected " + statistic + " item(s)");
+                playerElement.css("padding-left", "20px");
+                // Append the player element to the "Townpeople Team" section
+                townpeopleTeamElement.append(playerElement);
+            }
+        });
         Socket.restart();
         UserPanel.show();
         show();
