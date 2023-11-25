@@ -91,11 +91,17 @@ GameMap = (function () {
         this.input.keyboard.on('keydown', (e) => {
             if (!pressedKeys.includes(e.code)) {
                 pressedKeys.push(e.code);
+                if( e.code === 'KeyE') {
+                    PLAYER_SPEED = 4
+                }
             }
         });
         
         this.input.keyboard.on('keyup', (e) => {
             pressedKeys = pressedKeys.filter((key) => key !== e.code);
+            if( e.code === 'KeyE') {
+                PLAYER_SPEED = 2
+            }
         });
     }
 

@@ -1,4 +1,4 @@
-const PLAYER_SPEED = 2;
+let PLAYER_SPEED = 2;
 const SHIP_WIDTH = 2160;
 const SHIP_HEIGHT = 1166;
 
