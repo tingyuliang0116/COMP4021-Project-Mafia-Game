@@ -308,7 +308,7 @@ button.icon:active {
     background-color: var(--main-panel-background); /* Adjust the color as needed */
     border-radius: 10px;
     text-align: center;
-    padding: 60px;
+    padding: 50px;
     max-width: 1000px; /* Adjust the maximum width as desired */
 }
 
@@ -453,5 +453,9 @@ li {
 
 canvas {
     border-radius: 12px;
+
+}
+#gametime {
+    padding-bottom: 25px;
 
 }

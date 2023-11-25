@@ -4,6 +4,8 @@ const sounds = {
     gameover: new Audio("gameover.mp3"),
     background: new Audio("background.mp3")
 };
+var startTime = null;
+var endTime = null;
 const SignInForm = (function () {
     // This function initializes the UI
     const initialize = function () {
@@ -169,6 +171,8 @@ const WaitingPanel = (function () {
             hide();
             $("#background").hide();
             Game.show();
+            startTime = new Date();
+
 
             setTimeout(gameOverPanel.show('Mafia', onlineUsers), 100000);
         });
@@ -209,6 +213,7 @@ const gameOverPanel = (function () {
         sounds.gameover.play();
         $("#background").show();
         Game.hide();
+        endTime = new Date();
         //depends on player's team, show different end game message display
         const currentUser = Authentication.getUser();
         const team = (onlineUsers[currentUser.username].team).toString();
@@ -249,10 +254,16 @@ const statPanel = (function () {
         } else {
             $("#stat-panel #gameover").text("You Lose!");
         }
+        var elapsedTime = endTime - startTime;
+        var elapsedSeconds = Math.floor(elapsedTime / 1000);
+        var minutes = Math.floor(elapsedSeconds / 60);
+        var seconds = elapsedSeconds % 60;
+        var gametime = $("<div></div>").text("Game time: " + minutes + " minutes " + seconds + " seconds");
+        $("#stat-panel #gametime").append(gametime);
         var mafiaTeamElement = $("<div><strong>Mafia Team:</strong></div>");
         var townpeopleTeamElement = $("<div><strong>Townpeople Team:</strong></div>");
-        mafiaTeamElement.css("padding-right","30px");
-        townpeopleTeamElement.css("padding-left","30px");
+        mafiaTeamElement.css("padding-right", "30px");
+        townpeopleTeamElement.css("padding-left", "30px");
         $("#stat-panel #stat").append(mafiaTeamElement, townpeopleTeamElement);
         Object.keys(onlineUsers).forEach(function (username) {
             var name = onlineUsers[username].name;
