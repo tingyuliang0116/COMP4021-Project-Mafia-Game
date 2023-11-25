@@ -276,7 +276,7 @@ const Game = (function () {
 
     const show = function () {
         sounds.background.pause();
-        sounds.game.play();
+       // sounds.game.play();
         map = null;
         $("#gameMap").empty();
         $("#gameMap").css("display", "flex");
