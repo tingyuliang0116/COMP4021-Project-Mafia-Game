@@ -174,7 +174,7 @@ const WaitingPanel = (function () {
             startTime = new Date();
 
 
-            setTimeout(gameOverPanel.show('Mafia', onlineUsers), 100000);
+            // setTimeout(gameOverPanel.show('Mafia', onlineUsers), 100000);
         });
     };
     const update = function (onlineUsers) {

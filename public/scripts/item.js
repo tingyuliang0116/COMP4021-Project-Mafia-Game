@@ -30,7 +30,7 @@ const Item = function(ctx, x, y, color) {
     // `"green"`, `"red"`, `"yellow"` or `"purple"`
     const setColor = function(color) {
         sprite.setSequence(items[color]);
-        birthTime = performance.now();
+        // birthTime = performance.now();
     };
 
     // This function gets the age (in millisecond) of the gem.

@@ -4,16 +4,25 @@ const PLAYER_HEIGHT = 50;
 const PLAYER_WIDTH = 37;
 const PLAYER_START_X = 330;
 const PLAYER_START_Y = 100;
-
+const ITEM_PATH = './item.png';
 let selfId = null
 let selfTeam = null;
 const player = {};
 let otherPlayers = {};
-
 let pressedKeys = [];
 let config = {};
 let onlineUsers = {};
-const item = {width: 32, height: 32, path: "./item.png"};
+let item_location = [[-30, 250],[-800, 0], [-300, -320], [-500, -510], [620, -200]];
+const item = {
+    item1: {  width: 32, height: 32, count: 4, timing: 200, loop: true , path:'./item/item1.png'},
+    item2: {  width: 32, height: 32, count: 4, timing: 200, loop: true , path:'./item/item2.png'},
+    item3: { width: 32, height: 32, count: 4, timing: 200, loop: true,  path:'./item/item3.png'},
+    item4: { width: 32, height: 32, count: 4, timing: 200, loop: true,  path:'./item/item4.png' },
+    item5: { width: 32, height: 32, count: 4, timing: 200, loop: true,  path:'./item/item5.png' },
+    item6: { width: 32, height: 32, count: 4, timing: 200, loop: true,  path:'./item/item6.png' },
+    item7: { width: 32, height: 32, count: 4, timing: 200, loop: true,  path:'./item/item7.png' },
+    item8: { width: 32, height: 32, count: 4, timing: 200, loop: true,  path:'./item/item8.png' },
+};
 const ghost = {width:1024, height: 163, path: './dead.png'}; //when the player is dead 
 const players = {
     'mafia': {width: 84, height: 128, exist: false, path: './player.png'}, 
@@ -33,17 +42,61 @@ GameMap = (function () {
             frameWidth: players.townPeople.width,
             frameHeight: players.townPeople.height,
         });
-        this.load.spritesheet(`item`, item.path, {
-            frameWidth: item.width,
-            frameHeight: item.height,
-            });
+        this.load.spritesheet(`townPeople2`, players.townPeople2.path, {
+            frameWidth: players.townPeople2.width,
+            frameHeight: players.townPeople2.height,
+        });
+        this.load.spritesheet(`townPeople3`, players.townPeople3.path, {
+            frameWidth: players.townPeople3.width,
+            frameHeight: players.townPeople3.height,
+        });
+        // this.load.image('item', ITEM_PATH);
+        this.load.spritesheet(`item1`, item.item1.path, {
+            frameWidth: item.item1.width,
+            frameHeight: item.item1.height,
+        });
+        this.load.spritesheet(`item2`,  item.item2.path, {
+            frameWidth: item.item2.width,
+            frameHeight: item.item2.height,
+        });
+        this.load.spritesheet(`item3`,  item.item3.path, {
+            frameWidth: item.item3.width,
+            frameHeight: item.item3.height,
+        });
+        this.load.spritesheet(`item4`,  item.item4.path, {
+            frameWidth: item.item4.width,
+            frameHeight: item.item4.height,
+        });
+        this.load.spritesheet(`item5`,  item.item5.path, {
+            frameWidth: item.item5.width,
+            frameHeight: item.item5.height,
+        });
+        this.load.spritesheet(`item5`,  item.item5.path, {
+            frameWidth: item.item5.width,
+            frameHeight: item.item5.height,
+        });
+        // this.load.image('item', './item.ong');
+
     }
 
     function create() {
+        // let i = 0;
+        const item_index = ['item1', 'item2', 'item3', 'item4', 'item5']
+        // let xy = [];
+        // let j = 0
+        // while(i < 4){
+        //     let x = Math.floor(Math.random() * 800);
+        //     let y = Math.floor(Math.random() * 450);
+        //     if (isWithinMovementBoundaries(x, y)) {
+        //         i++;
+        //         xy.push([x, y]);
+        //         j++;
+        //     }
+        // }
         const ship = this.add.image(0, 0, 'ship');
         otherPlayers = this.add.group();
         Object.values(onlineUsers).forEach((user) => {
-            if (user.playerId === selfId) { 
+            if (user.playerId === selfId) {  // if user id is the same 
                 if (user.team === "Mafia") {
                     player.sprite = this.add.sprite(PLAYER_START_X, PLAYER_START_Y, 'mafia');
                     player.sprite.displayHeight = PLAYER_HEIGHT;
@@ -56,7 +109,7 @@ GameMap = (function () {
                     selfTeam = 'townPeople'
                 }
             }
-            else {
+            else { // if other user id 
                 if (user.team === "Mafia") {
                     const otherPlayerSprite = this.add.sprite(PLAYER_START_X, PLAYER_START_Y, `mafia`);
                     otherPlayerSprite.displayHeight = PLAYER_HEIGHT;
@@ -74,8 +127,18 @@ GameMap = (function () {
                 }
             }
         })
-        this.add.sprite(PLAYER_START_X, PLAYER_START_Y + 100, 'item');
-
+        let i = 0;
+        while(i < 5){
+            this.add.sprite(item_location[i][0], item_location[i][1], item_index[i]);
+            i++;
+        }
+        // const frames = this.textures.get('item').getFrameNames();
+        // const frameX = 32;
+        // const frameY = 32;
+        // const frameKey = this.textures.get('item').getFrameAt(frameX, frameY).texture.key;
+        
+        // this.add.sprite(PLAYER_START_X, PLAYER_START_Y + 100, 'item');
+        // this.add.image(PLAYER_START_X, PLAYER_START_Y + 100, frameKey);
         this.anims.create({
             key: 'mafia_running',
             frames: this.anims.generateFrameNumbers('mafia'),
