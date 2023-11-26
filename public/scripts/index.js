@@ -18,6 +18,8 @@ const ghost = {width:1024, height: 163, path: './dead.png'}; //when the player i
 const players = {
     'mafia': {width: 84, height: 128, exist: false, path: './player.png'}, 
     'townPeople': {width: 166, height: 270, exist:false, path: '/player2.png'},
+    'townPeople2': {width: 128, height: 163, exist:false, path: '/player3.png'},
+    'townPeople3': {width: 95, height:158, exist:false, path: '/player4.png'}
 };
 
 GameMap = (function () {
