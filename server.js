@@ -180,12 +180,13 @@ io.on("connection", (socket) => {
         }
     })
     //call this when kill player
-    socket.on('kill player', () => {
+    socket.on('kill player', (playerId) => {
         const {username, name} = socket.request.session.user;
         onlineUsers[username].statistic += 1;
         totalTownPeople -= 1
+        socket.broadcast.emit('kill player', playerId);
         if (totalTownPeople === 0) {
-            socket.broadcast.emit('game end', 'Mafia');
+            io.emit('game end', 'Mafia', JSON.stringify(onlineUsers));
         }
     })
 

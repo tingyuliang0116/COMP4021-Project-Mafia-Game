@@ -33,6 +33,10 @@ const Socket = (function () {
         socket.on("collect item", (item) => {
             GameMap.otherPlayerCollectItem(item)
         });
+
+        socket.on("kill player", (playerId) => {
+            GameMap.otherPlayerGetKilled(playerId)
+        })
         //receive game end notice
         socket.on("game end", (winningTeam, users) => {
             users = JSON.parse(users);
@@ -80,9 +84,9 @@ const Socket = (function () {
         }
     }
 
-    const killPlayer = function () {
+    const killPlayer = function (playerId) {
         if (socket && socket.connected) {
-            socket.emit("kill player");
+            socket.emit("kill player", playerId);
         }
     }
 

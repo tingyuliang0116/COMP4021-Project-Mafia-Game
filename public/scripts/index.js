@@ -14,6 +14,9 @@ let config = {};
 let onlineUsers = {};
 let item_location = [[-30, 250], [-800, 0], [-300, -320], [-500, -510], [620, -200], [-588, 522], [896, -126], [-382, -48], [470, -294], [628, 152]];
 let items;
+let canKill = false;
+let resetCanKill;
+let targetTownPeopleId = null;
 
 const item = {
     item1: {width: 32, height: 32, count: 4, timing: 200, loop: true, path: './item/item1.png'},
@@ -27,10 +30,9 @@ const item = {
 };
 const ghost = {width: 1024, height: 163, path: './dead.png'}; //when the player is dead
 const players = {
-    'mafia': {width: 84, height: 128, exist: false, path: './player.png'},
-    'townPeople': {width: 166, height: 270, exist: false, path: '/player2.png'},
-    'townPeople2': {width: 128, height: 163, exist: false, path: '/player3.png'},
-    'townPeople3': {width: 95, height: 158, exist: false, path: '/player4.png'}
+    'mafia': {width: 84, height: 128, exist: false, path: './player.png'}, 
+    'townPeople': {width: 166, height: 270, exist:false, path: '/player2.png'},
+    'ghost': {width: 84, height: 128, exist:false, path: '/dead.png'},
 };
 
 GameMap = (function () {
@@ -43,14 +45,6 @@ GameMap = (function () {
         this.load.spritesheet(`townPeople`, players.townPeople.path, {
             frameWidth: players.townPeople.width,
             frameHeight: players.townPeople.height,
-        });
-        this.load.spritesheet(`townPeople2`, players.townPeople2.path, {
-            frameWidth: players.townPeople2.width,
-            frameHeight: players.townPeople2.height,
-        });
-        this.load.spritesheet(`townPeople3`, players.townPeople3.path, {
-            frameWidth: players.townPeople3.width,
-            frameHeight: players.townPeople3.height,
         });
         this.load.spritesheet(`item1`, item.item1.path, {
             frameWidth: item.item1.width,
@@ -84,6 +78,7 @@ GameMap = (function () {
             frameWidth: item.item8.width,
             frameHeight: item.item8.height,
         });
+        this.load.image(`ghost`, players.ghost.path);
     }
 
     function create() {
@@ -93,7 +88,7 @@ GameMap = (function () {
         console.log(no_of_items);
         const item_index = ['item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7', 'item8'];
         const ship = this.add.image(0, 0, 'ship');
-        otherPlayers = this.add.group();
+        otherPlayers = this.physics.add.group();
         Object.values(onlineUsers).forEach((user) => {
             if (user.playerId === selfId) {  // if user id is the same 
                 if (user.team === "Mafia") {
@@ -127,6 +122,7 @@ GameMap = (function () {
         })
 
         if (selfTeam === 'townPeople') {
+        if (selfTeam === 'townPeople') {
             items = this.physics.add.staticGroup();
             for (let i = item_index.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -143,6 +139,9 @@ GameMap = (function () {
             }
 
             this.physics.add.overlap(player.sprite, items, collectItem, null, this);
+
+        } else if (selfTeam === 'mafia') {
+            this.physics.add.overlap(player.sprite, otherPlayers, canKillTownPeople, null, this);
         }
 
         this.anims.create({
@@ -173,22 +172,27 @@ GameMap = (function () {
             if (e.code === 'KeyE') {
                 PLAYER_SPEED = 2
             }
+            if ( e.code === 'KeyD' && canKill) {
+                killTownPeople();
+            }
         });
     }
 
     function update() {
         this.scene.scene.cameras.main.centerOn(player.sprite.x, player.sprite.y);
-        const playerMoved = movePlayer(pressedKeys, player.sprite);
-        if (playerMoved) {
-            Socket.playerMove({x: player.sprite.x, y: player.sprite.y, playerId: selfId});
-            player.movedLastFrame = true;
-        } else {
-            if (player.movedLastFrame) {
-                Socket.playerMoveEnd(selfId);
+        if (player.sprite.active) {
+            const playerMoved = movePlayer(pressedKeys, player.sprite);
+            if (playerMoved) {
+                Socket.playerMove({x: player.sprite.x, y: player.sprite.y, playerId: selfId});
+                player.movedLastFrame = true;
+            } else {
+                if (player.movedLastFrame) {
+                    Socket.playerMoveEnd(selfId);
+                }
+                player.movedLastFrame = false;
             }
-            player.movedLastFrame = false;
+            animateMovement(pressedKeys, player.sprite, selfTeam);
         }
-        animateMovement(pressedKeys, player.sprite, selfTeam);
         // Aninamte other player
 
         otherPlayers.getChildren().forEach((otherPlayer) => {
@@ -268,6 +272,41 @@ GameMap = (function () {
             })
         }
     }
-    return {getMap, otherPlayerMove, otherPlayerMoveEnd, otherPlayerCollectItem}
+
+    const canKillTownPeople = function (mafia, townPeople) {
+        if (townPeople.body.gameObject.active) { 
+            clearTimeout(resetCanKill)
+            canKill = true
+            targetTownPeopleId = townPeople.playerId
+            resetCanKill = setTimeout(function() {canKill = false, targetTownPeopleId = null}, 100)
+        }
+    }
+
+    const killTownPeople = function() {
+        Socket.killPlayer(targetTownPeopleId);
+        otherPlayers.getChildren().forEach((otherPlayer) => {
+            if(otherPlayer.playerId === targetTownPeopleId){
+                otherPlayer.body.gameObject.active = false;
+                otherPlayer.setTexture('ghost')
+            }
+        })
+    }       
+    
+    const otherPlayerGetKilled = function (playerId) {
+        if (playerId === selfId) {
+            player.sprite.body.gameObject.active = false;
+            player.sprite.setTexture('ghost')
+        }
+        else {
+            otherPlayers.getChildren().forEach((otherPlayer) => {
+                if(otherPlayer.playerId === playerId){
+                    otherPlayer.body.gameObject.active = false;
+                    otherPlayer.setTexture('ghost')
+                }
+            })
+        }
+    }
+
+    return {getMap, otherPlayerMove, otherPlayerMoveEnd, otherPlayerCollectItem, otherPlayerGetKilled}
 
 })();
