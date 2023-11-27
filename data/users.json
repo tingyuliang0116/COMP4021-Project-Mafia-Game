@@ -18,5 +18,15 @@
   "avatar": "Bride",
   "name": "mmm",
   "password": "$2b$10$UM0v5sifSQRk/UGDhA324eMoEK91pprMOgRO5wJc0ee4Dh29cJfd."
+ },
+ "felix": {
+  "avatar": "Police",
+  "name": "jinhong",
+  "password": "$2b$10$ADYgVooHeNAoaeP0EtWyXeN7Wa/zkotn.V4YnWR07QkqhA9ld6v66"
+ },
+ "alex": {
+  "avatar": "Guardsman",
+  "name": "sa",
+  "password": "$2b$10$qFySczwAC/J0.pltMf/Q8uOD9794DtrKHCLSbhpNTBVy7NPmadOby"
  }
 }

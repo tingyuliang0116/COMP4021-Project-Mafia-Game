@@ -28,7 +28,7 @@ const item = {
     item7: {width: 32, height: 32, count: 4, timing: 200, loop: true, path: './item/item7.png'},
     item8: {width: 32, height: 32, count: 4, timing: 200, loop: true, path: './item/item8.png'},
 };
-const ghost = {width: 1024, height: 163, path: './dead.png'}; //when the player is dead
+const ghost = {width: 200, height: 164, path: './dead.png'}; //when the player is dead
 const players = {
     'mafia': {width: 84, height: 128, exist: false, path: './player.png'}, 
     'townPeople': {width: 166, height: 270, exist:false, path: '/player2.png'},
@@ -78,9 +78,8 @@ GameMap = (function () {
             frameWidth: item.item8.width,
             frameHeight: item.item8.height,
         });
-        this.load.image(`ghost`, players.ghost.path);
+        this.load.image('ghost', ghost.path);
     }
-
     function create() {
         let users = Socket.getUsers();
         let user_no = Object.keys(users).length;
@@ -97,7 +96,7 @@ GameMap = (function () {
                     player.sprite.displayWidth = PLAYER_WIDTH;
                     selfTeam = 'mafia'
                 } else {
-                    player.sprite = this.physics.add.sprite(PLAYER_START_X, PLAYER_START_Y, 'townPeople');
+                    player.sprite = this.physics.add.sprite(PLAYER_START_X + 20, PLAYER_START_Y, 'townPeople');
                     player.sprite.displayHeight = PLAYER_HEIGHT;
                     player.sprite.displayWidth = PLAYER_WIDTH;
                     selfTeam = 'townPeople'
@@ -111,7 +110,7 @@ GameMap = (function () {
                     otherPlayerSprite.team = 'mafia'
                     otherPlayers.add(otherPlayerSprite)
                 } else {
-                    const otherPlayerSprite = this.add.sprite(PLAYER_START_X, PLAYER_START_Y, `townPeople`);
+                    const otherPlayerSprite = this.add.sprite(PLAYER_START_X - 20, PLAYER_START_Y, `townPeople`);
                     otherPlayerSprite.displayHeight = PLAYER_HEIGHT;
                     otherPlayerSprite.displayWidth = PLAYER_WIDTH;
                     otherPlayerSprite.playerId = user.playerId
@@ -286,7 +285,7 @@ GameMap = (function () {
         otherPlayers.getChildren().forEach((otherPlayer) => {
             if(otherPlayer.playerId === targetTownPeopleId){
                 otherPlayer.body.gameObject.active = false;
-                otherPlayer.setTexture('ghost')
+                otherPlayer.setTexture('ghost').setScale(0.2);
             }
         })
     }       
