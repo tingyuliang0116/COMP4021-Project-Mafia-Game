@@ -1,10 +1,7 @@
-# COMP4021-Project
-# Phaser 3 Webpack Project Template
-A Phaser 3 project template with ES6 support via [Babel 7](https://babeljs.io/) and [Webpack 4](https://webpack.js.org/) that includes hot-reloading for development and production-ready builds.
+## Introduction
 
-This has been updated for Phaser 3.50.0 version and above.
+ The objective of the game is to clear a path through the maze to reach the end goal, while avoiding obstacles and enemies. Players can place bombs to destroy obstacles and enemies, and collect power-ups to increase their abilities. The last player standing wins the game.
 
-Loading images via JavaScript module `import` is also supported, although not recommended.
 
 ## Requirements
 
@@ -17,8 +14,21 @@ Loading images via JavaScript module `import` is also supported, although not re
 | `npm install` | Install project dependencies |
 | `npm start` | Build project and open web server running project |
 
-## Writing Code
 
-After cloning the repo, run `npm install` from your project directory. Then, you can start the local development server by running `npm start`.
+## Controls
 
-After starting the development server with `npm start`, you can edit any files in the `src` folder and webpack will automatically recompile and reload your server (available at `http://localhost:8080` by default).
+The game is played with keyboard. The default controls are:
+ - Movement: Arrow keys
+ - Kill Townpeople: Press Key "D"
+   
+## Cheat Mode
+
+## Dependencies
+### The game uses the following dependencies:
+- socket.io: for real-time communication between the server and clients.
+- socket.io-client: for real-time communication between the client and server.
+- express: for serving the game files and handling HTTP requests.
+- typescript: for adding type checking to the game code.
+- bcrypt: for hashing and salting passwords.
+- snowpack: for building and bundling the game files.
+
