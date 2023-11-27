@@ -13,7 +13,6 @@ In "Mafia Game," two powerful factions clash in a fight for dominance and surviv
 | `npm install` | Install project dependencies |
 | `npm start` | Build project and open web server running project |
 
-
 ## Controls
 
 The game is played with keyboard. The default controls are:
@@ -21,6 +20,8 @@ The game is played with keyboard. The default controls are:
  - Kill Townpeople: Press Key "D"
    
 ## Cheat Mode
+
+Speed Up: Press Key "E" 
 
 ## Game Flow
  - Register 
