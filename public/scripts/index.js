@@ -89,7 +89,8 @@ GameMap = (function () {
     function create() {
         let users= Socket.getUsers();
         let user_no =  Object.keys(users).length;
-        let no_of_items = user_no * 2;
+        let no_of_items = (user_no-1) * 2;
+        console.log(no_of_items);
         const item_index = ['item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7', 'item8'];
         const ship = this.add.image(0, 0, 'ship');
         otherPlayers = this.add.group();
@@ -241,6 +242,11 @@ GameMap = (function () {
 
     const collectItem = function (player, item) {
         Socket.collectItem(item.name);
+        sounds.collect.play();
+        setTimeout(function() {
+            sounds.collect.pause();
+            sounds.collect.currentTime = 0;
+        }, 1000);
         items.killAndHide(item);
         item.body.enable = false;
     }

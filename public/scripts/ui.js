@@ -240,6 +240,7 @@ const statPanel = (function () {
         $("#stat-panel").hide();
         $("#restart-button").on("click", () => {
             $("#stat-panel #stat").empty();
+            $("#stat-panel #gametime").empty();
             hide();
             StartPanel.show();
         });

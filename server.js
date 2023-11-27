@@ -145,8 +145,7 @@ const {Server} = require("socket.io");
 const httpServer = createServer(app);
 const io = new Server(httpServer);
 const onlineUsers = {};
-
-const totalItems = 5; //set this when create items
+let totalItems; //set this when create items
 
 let totalScore = 0;
 let totalTownPeople = 0;
@@ -174,6 +173,8 @@ io.on("connection", (socket) => {
         onlineUsers[username].statistic += 1;
         totalScore += 1
         socket.broadcast.emit('collect item', item);
+        let user_no = Object.keys(onlineUsers).length;
+        totalItems = (user_no - 1) * 2
         if (totalScore === totalItems) {
             io.emit('game end', 'Townpeople', JSON.stringify(onlineUsers));
         }
@@ -205,6 +206,8 @@ io.on("connection", (socket) => {
         onlineUsers[username].ready = false;
         onlineUsers[username].team = null;
         onlineUsers[username].statistic = 0;
+        totalScore = 0;
+        totalTownPeople = 0;
     })
 })
 
