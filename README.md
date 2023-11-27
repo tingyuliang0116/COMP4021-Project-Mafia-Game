@@ -23,6 +23,8 @@ The game is played with keyboard. The default controls are:
    
 ## Cheat Mode
 
+## Game Flow
+
 ## Dependencies
 ### The game uses the following dependencies:
 - socket.io: for real-time communication between the server and clients.
