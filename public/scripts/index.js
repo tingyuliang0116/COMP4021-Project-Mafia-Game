@@ -12,7 +12,7 @@ let otherPlayers = {};
 let pressedKeys = [];
 let config = {};
 let onlineUsers = {};
-let item_location = [[-30, 250],[-800, 0], [-300, -320], [-500, -510], [620, -200]];
+let item_location = [[-30, 250],[-800, 0], [-300, -320], [-500, -520], [620, -250]];
 const item = {
     item1: {  width: 32, height: 32, count: 4, timing: 200, loop: true , path:'./item/item1.png'},
     item2: {  width: 32, height: 32, count: 4, timing: 200, loop: true , path:'./item/item2.png'},
@@ -132,13 +132,7 @@ GameMap = (function () {
             this.add.sprite(item_location[i][0], item_location[i][1], item_index[i]);
             i++;
         }
-        // const frames = this.textures.get('item').getFrameNames();
-        // const frameX = 32;
-        // const frameY = 32;
-        // const frameKey = this.textures.get('item').getFrameAt(frameX, frameY).texture.key;
-        
-        // this.add.sprite(PLAYER_START_X, PLAYER_START_Y + 100, 'item');
-        // this.add.image(PLAYER_START_X, PLAYER_START_Y + 100, frameKey);
+
         this.anims.create({
             key: 'mafia_running',
             frames: this.anims.generateFrameNumbers('mafia'),
