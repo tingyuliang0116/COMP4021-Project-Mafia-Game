@@ -111,7 +111,7 @@ GameMap = (function () {
             }
         })
 
-        if (selfTeam === 'townPeople') {
+        if (selfTeam === 'TownPeople') {
             items = this.physics.add.staticGroup();
 
             for (let i = 0; i < 5; i ++) {
@@ -121,7 +121,7 @@ GameMap = (function () {
             }
 
             this.physics.add.overlap(player.sprite, items, collectItem, null, this);
-        }
+        } 
 
         this.anims.create({
             key: 'mafia_running',
@@ -240,7 +240,6 @@ GameMap = (function () {
             })
         }
     }
-
     return {getMap, otherPlayerMove, otherPlayerMoveEnd, otherPlayerCollectItem}
 
 })();
