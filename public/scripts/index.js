@@ -126,7 +126,7 @@ GameMap = (function () {
             }
         })
 
-        if (selfTeam === 'TownPeople') {
+        if (selfTeam === 'townPeople') {
             items = this.physics.add.staticGroup();
 
             for (let i = 0; i < no_of_items; i ++) {
