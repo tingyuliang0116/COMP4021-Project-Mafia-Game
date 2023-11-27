@@ -13,5 +13,10 @@
   "avatar": "Bunnies",
   "name": "Peter",
   "password": "$2b$10$LENG.j.BggN4GDeiK2fbseFvTHH8mqC1h3UWgVv838ZXmmIPzKDtG"
+ },
+ "mmm": {
+  "avatar": "Bride",
+  "name": "mmm",
+  "password": "$2b$10$UM0v5sifSQRk/UGDhA324eMoEK91pprMOgRO5wJc0ee4Dh29cJfd."
  }
 }

@@ -128,7 +128,14 @@ GameMap = (function () {
 
         if (selfTeam === 'townPeople') {
             items = this.physics.add.staticGroup();
-
+            for (let i = item_index.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [item_index[i], item_index[j]] = [item_index[j], item_index[i]];
+            }
+            for (let i = item_location.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [item_location[i], item_location[j]] = [item_location[j], item_location[i]];
+            }
             for (let i = 0; i < no_of_items; i++) {
                 const item = this.add.sprite(item_location[i][0], item_location[i][1], item_index[i]);
                 item.name = item_index[i];
