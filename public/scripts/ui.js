@@ -1,6 +1,6 @@
 const sounds = {
     game: new Audio("game.mp3"),
-    collect: new Audio("collect.mp3"),
+    collect: new Audio("collection.mp3"),
     gameover: new Audio("gameover.mp3"),
     background: new Audio("background.mp3")
 };
