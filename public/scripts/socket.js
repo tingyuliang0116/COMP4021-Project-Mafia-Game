@@ -39,6 +39,7 @@ const Socket = (function () {
         })
         //receive game end notice
         socket.on("game end", (winningTeam, users) => {
+            GameMap.resetKill();
             users = JSON.parse(users);
             gameOverPanel.show(winningTeam, users)
         })

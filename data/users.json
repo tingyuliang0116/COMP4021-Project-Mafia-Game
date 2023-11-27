@@ -28,5 +28,40 @@
   "avatar": "Guardsman",
   "name": "sa",
   "password": "$2b$10$qFySczwAC/J0.pltMf/Q8uOD9794DtrKHCLSbhpNTBVy7NPmadOby"
+ },
+ "Michelle": {
+  "avatar": "Bride",
+  "name": "Michelle",
+  "password": "$2b$10$1ezZ/XIHu6jcnbMLkfsgV.i7VQInrIoOIpWM3R9to8K2MHqi8yJ7S"
+ },
+ "peter": {
+  "avatar": "Police",
+  "name": "peter",
+  "password": "$2b$10$dKwGKfLgjFIv32gxF69QUeA6/s8Onto3IZv9eCtvetuoHZHiDSkiW"
+ },
+ "test": {
+  "avatar": "Police",
+  "name": "test",
+  "password": "$2b$10$kt6S8V.rDxIrFCgnGfu6huNTpHK1zsNlZA16N2Cr/AwzON2ew5ZIu"
+ },
+ "Mich": {
+  "avatar": "Man Gua pi mao",
+  "name": "Mich",
+  "password": "$2b$10$oNB1eUM2Gz.7S84qcqpEbO48ZnTMPz7KRFKz41Nc151Duu4GZy9Py"
+ },
+ "testing": {
+  "avatar": "Police",
+  "name": "testing",
+  "password": "$2b$10$kpe1Qzh13TqWRAIBJidhZO4yBnRlhwOIUxc5yIekvcroM0MWzJiqm"
+ },
+ "Test": {
+  "avatar": "Construction worker",
+  "name": "Test",
+  "password": "$2b$10$j6FE7yQTM.SoXgu8kxj31.iYeYdKUH/./BFuUPDAs9K.hp/hvvMKS"
+ },
+ "testing1": {
+  "avatar": "Police",
+  "name": "testing1",
+  "password": "$2b$10$8kAUPNJXZdLYFqzUbCqKZOQ3xr0o51MPZ9miMHlkmyyNdAkVRl.6."
  }
 }

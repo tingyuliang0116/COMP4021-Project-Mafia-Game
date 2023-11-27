@@ -184,6 +184,7 @@ io.on("connection", (socket) => {
     })
     //call this when kill player
     socket.on('kill player', (playerId) => {
+        console.log(playerId)
         const {username, name} = socket.request.session.user;
         onlineUsers[username].statistic += 1;
         totalKilled += 1

@@ -288,6 +288,7 @@ const statPanel = (function () {
         });
         Socket.restart();
         UserPanel.show();
+        PLAYER_SPEED = 2;
         show();
 
     }
