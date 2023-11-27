@@ -12,7 +12,8 @@ let otherPlayers = {};
 let pressedKeys = [];
 let config = {};
 let onlineUsers = {};
-let item_location = [[-30, 250], [-800, 0], [-300, -320], [-500, -510], [620, -200], [-588, 522], [896, -126], [-382, -48], [470, -294], [628, 152]];
+const townPople_location = [[240, 100], [340, 10], [410, 100], [230, -80], [450, -80], [240, -270], [340, -270], [410, -270]];
+const item_location = [[-30, 250], [-800, 0], [-300, -320], [-500, -510], [620, -200], [-588, 522], [896, -126], [-382, -48], [470, -294], [628, 152]];
 let items;
 let canKill = false;
 let resetCanKill;
@@ -88,6 +89,8 @@ GameMap = (function () {
         const item_index = ['item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7', 'item8'];
         const ship = this.add.image(0, 0, 'ship');
         otherPlayers = this.physics.add.group();
+
+        let townPeopleIndex = 0;
         Object.values(onlineUsers).forEach((user) => {
             if (user.playerId === selfId) {  // if user id is the same 
                 if (user.team === "Mafia") {
@@ -96,10 +99,11 @@ GameMap = (function () {
                     player.sprite.displayWidth = PLAYER_WIDTH;
                     selfTeam = 'mafia'
                 } else {
-                    player.sprite = this.physics.add.sprite(PLAYER_START_X + 20, PLAYER_START_Y, 'townPeople');
+                    player.sprite = this.physics.add.sprite(townPople_location[townPeopleIndex][0], townPople_location[townPeopleIndex][1], 'townPeople');
                     player.sprite.displayHeight = PLAYER_HEIGHT;
                     player.sprite.displayWidth = PLAYER_WIDTH;
                     selfTeam = 'townPeople'
+                    townPeopleIndex++;
                 }
             } else { // if other user id
                 if (user.team === "Mafia") {
@@ -110,12 +114,13 @@ GameMap = (function () {
                     otherPlayerSprite.team = 'mafia'
                     otherPlayers.add(otherPlayerSprite)
                 } else {
-                    const otherPlayerSprite = this.add.sprite(PLAYER_START_X - 20, PLAYER_START_Y, `townPeople`);
+                    const otherPlayerSprite = this.add.sprite(townPople_location[townPeopleIndex][0], townPople_location[townPeopleIndex][1], `townPeople`);
                     otherPlayerSprite.displayHeight = PLAYER_HEIGHT;
                     otherPlayerSprite.displayWidth = PLAYER_WIDTH;
                     otherPlayerSprite.playerId = user.playerId
                     otherPlayerSprite.team = 'townPeople'
                     otherPlayers.add(otherPlayerSprite)
+                    townPeopleIndex++;
                 }
             }
         })
