@@ -1,7 +1,6 @@
 ## Introduction
 
- The objective of the game is to clear a path through the maze to reach the end goal, while avoiding obstacles and enemies. Players can place bombs to destroy obstacles and enemies, and collect power-ups to increase their abilities. The last player standing wins the game.
-
+In "Mafia Game," two powerful factions clash in a fight for dominance and survival. Players are randomly assigned to one of two teams: the cunning mafia or the resourceful townspeople. Each team has unique objectives and must outmaneuver their opponents to claim victory.
 
 ## Requirements
 
