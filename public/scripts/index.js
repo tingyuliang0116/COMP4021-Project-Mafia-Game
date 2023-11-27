@@ -122,7 +122,6 @@ GameMap = (function () {
         })
 
         if (selfTeam === 'townPeople') {
-        if (selfTeam === 'townPeople') {
             items = this.physics.add.staticGroup();
             for (let i = item_index.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
