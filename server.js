@@ -175,7 +175,7 @@ io.on("connection", (socket) => {
         totalScore += 1
         socket.broadcast.emit('collect item', item);
         if (totalScore === totalItems) {
-            io.emit('game end', 'Townpeople');
+            io.emit('game end', 'Townpeople', JSON.stringify(onlineUsers));
         }
     })
     //call this when kill player

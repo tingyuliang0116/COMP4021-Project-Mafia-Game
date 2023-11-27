@@ -34,7 +34,8 @@ const Socket = (function () {
             GameMap.otherPlayerCollectItem(item)
         });
         //receive game end notice
-        socket.on("game end", (winningTeam) => {
+        socket.on("game end", (winningTeam, users) => {
+            users = JSON.parse(users);
             gameOverPanel.show(winningTeam, users)
         })
     };
