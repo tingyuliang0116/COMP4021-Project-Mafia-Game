@@ -146,7 +146,7 @@ const httpServer = createServer(app);
 const io = new Server(httpServer);
 const onlineUsers = {};
 
-const totalItems = 10; //set this when create items
+const totalItems = 5; //set this when create items
 
 let totalScore = 0;
 let totalTownPeople = 0;
@@ -169,10 +169,11 @@ io.on("connection", (socket) => {
         socket.broadcast.emit('moveEnd', playerId);
     });
     //call this when player collect item
-    socket.on('collect item', () => {
+    socket.on('collect item', (item) => {
         const {username, name} = socket.request.session.user;
         onlineUsers[username].statistic += 1;
         totalScore += 1
+        socket.broadcast.emit('collect item', item);
         if (totalScore === totalItems) {
             io.emit('game end', 'Townpeople');
         }

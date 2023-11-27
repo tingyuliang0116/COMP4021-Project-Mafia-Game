@@ -13,6 +13,8 @@ let pressedKeys = [];
 let config = {};
 let onlineUsers = {};
 let item_location = [[-30, 250],[-800, 0], [-300, -320], [-500, -520], [620, -250]];
+let items;
+
 const item = {
     item1: {  width: 32, height: 32, count: 4, timing: 200, loop: true , path:'./item/item1.png'},
     item2: {  width: 32, height: 32, count: 4, timing: 200, loop: true , path:'./item/item2.png'},
@@ -50,7 +52,6 @@ GameMap = (function () {
             frameWidth: players.townPeople3.width,
             frameHeight: players.townPeople3.height,
         });
-        // this.load.image('item', ITEM_PATH);
         this.load.spritesheet(`item1`, item.item1.path, {
             frameWidth: item.item1.width,
             frameHeight: item.item1.height,
@@ -71,39 +72,21 @@ GameMap = (function () {
             frameWidth: item.item5.width,
             frameHeight: item.item5.height,
         });
-        this.load.spritesheet(`item5`,  item.item5.path, {
-            frameWidth: item.item5.width,
-            frameHeight: item.item5.height,
-        });
-        // this.load.image('item', './item.ong');
-
     }
 
     function create() {
-        // let i = 0;
         const item_index = ['item1', 'item2', 'item3', 'item4', 'item5']
-        // let xy = [];
-        // let j = 0
-        // while(i < 4){
-        //     let x = Math.floor(Math.random() * 800);
-        //     let y = Math.floor(Math.random() * 450);
-        //     if (isWithinMovementBoundaries(x, y)) {
-        //         i++;
-        //         xy.push([x, y]);
-        //         j++;
-        //     }
-        // }
         const ship = this.add.image(0, 0, 'ship');
         otherPlayers = this.add.group();
         Object.values(onlineUsers).forEach((user) => {
             if (user.playerId === selfId) {  // if user id is the same 
                 if (user.team === "Mafia") {
-                    player.sprite = this.add.sprite(PLAYER_START_X, PLAYER_START_Y, 'mafia');
+                    player.sprite = this.physics.add.sprite(PLAYER_START_X, PLAYER_START_Y, 'mafia');
                     player.sprite.displayHeight = PLAYER_HEIGHT;
                     player.sprite.displayWidth = PLAYER_WIDTH;
                     selfTeam = 'mafia'
                 } else {
-                    player.sprite = this.add.sprite(PLAYER_START_X, PLAYER_START_Y, 'townPeople');
+                    player.sprite = this.physics.add.sprite(PLAYER_START_X, PLAYER_START_Y, 'townPeople');
                     player.sprite.displayHeight = PLAYER_HEIGHT;
                     player.sprite.displayWidth = PLAYER_WIDTH;
                     selfTeam = 'townPeople'
@@ -127,10 +110,17 @@ GameMap = (function () {
                 }
             }
         })
-        let i = 0;
-        while(i < 5){
-            this.add.sprite(item_location[i][0], item_location[i][1], item_index[i]);
-            i++;
+
+        if (selfTeam === 'townPeople') {
+            items = this.physics.add.staticGroup();
+
+            for (let i = 0; i < 5; i ++) {
+                const item = this.add.sprite(item_location[i][0], item_location[i][1], item_index[i]);
+                item.name = item_index[i];
+                items.add(item);
+            }
+
+            this.physics.add.overlap(player.sprite, items, collectItem, null, this);
         }
 
         this.anims.create({
@@ -169,8 +159,6 @@ GameMap = (function () {
         const playerMoved = movePlayer(pressedKeys, player.sprite);
         if (playerMoved) {
             Socket.playerMove({x: player.sprite.x, y: player.sprite.y, playerId: selfId});
-            //try update item collected
-            //Socket.collectItem()
             player.movedLastFrame = true;
         } else {
             if (player.movedLastFrame) {
@@ -198,6 +186,12 @@ GameMap = (function () {
             parent: 'gameMap',
             width: 800,
             height: 450,
+            physics: {
+                default: 'arcade',
+                arcade: {
+                    gravity: 0
+                }
+            },
             scene: {
                 preload: preload,
                 create: create,
@@ -223,7 +217,6 @@ GameMap = (function () {
     }
 
     const otherPlayerMoveEnd = function (playerId) {
-        console.log('revieved moved');
         otherPlayers.getChildren().forEach((otherPlayer) => {
             if(otherPlayer.playerId === playerId){
                 otherPlayer.moving = false;
@@ -231,6 +224,23 @@ GameMap = (function () {
         })
     }
 
-    return {getMap, otherPlayerMove, otherPlayerMoveEnd}
+    const collectItem = function (player, item) {
+        Socket.collectItem(item.name);
+        items.killAndHide(item);
+        item.body.enable = false;
+    }
+
+    const otherPlayerCollectItem = function (collectItem) {
+        if (selfTeam === 'townPeople') {
+            items.getChildren().forEach((item) => {
+                if (item.name === collectItem) {
+                    items.killAndHide(item);
+                    item.body.enable = false;
+                }
+            })
+        }
+    }
+
+    return {getMap, otherPlayerMove, otherPlayerMoveEnd, otherPlayerCollectItem}
 
 })();

@@ -29,6 +29,10 @@ const Socket = (function () {
         socket.on("moveEnd", (playerId) => {
             GameMap.otherPlayerMoveEnd(playerId)
         });
+
+        socket.on("collect item", (item) => {
+            GameMap.otherPlayerCollectItem(item)
+        });
         //receive game end notice
         socket.on("game end", (winningTeam) => {
             gameOverPanel.show(winningTeam, users)
@@ -69,9 +73,9 @@ const Socket = (function () {
         }
     };
 
-    const collectItem = function () {
+    const collectItem = function (item) {
         if (socket && socket.connected) {
-            socket.emit("collect item");
+            socket.emit("collect item", item);
         }
     }
 
