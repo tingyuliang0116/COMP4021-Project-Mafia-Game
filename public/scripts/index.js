@@ -12,7 +12,7 @@ let otherPlayers = {};
 let pressedKeys = [];
 let config = {};
 let onlineUsers = {};
-let item_location = [[-30, 250],[-800, 0], [-300, -320], [-500, -520], [620, -250]];
+let item_location = [[-30, 250],[-800, 0], [-300, -320], [-500, -510], [620, -200], [-588, 522], [896, -126], [-382, -48], [470, -294], [628, 152]];
 let items;
 
 const item = {
