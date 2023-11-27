@@ -23,11 +23,11 @@ The game is played with keyboard. The default controls are:
 ## Cheat Mode
 
 ## Game Flow
- -Register 
- -Sign in
- -Wait for the other players to participate in the waiting room 
- -As soon as every users in the servers get into the waiting room, there will role allocation which one mafia and others are townpeople 
- -Click the start button(flicking red) 
+ - Register 
+ - Sign in
+ - Wait for the other players to participate in the waiting room 
+ - As soon as every users in the servers get into the waiting room, there will role allocation which one mafia and others are townpeople 
+ - Click the start button(flicking red) 
  - Mafia has to kill all the town people before they collect every item which is 2 x # of townpeople. If mafia kills all the townpeople before they colect the hidden item, mafia wins. However, if townpeople collect all the items, which is visible to townpeople but invisible to mafia, town people win.
  - Statistics shows the number of town people killed on mafia’s board and amount of item collected by each town people. 
 
