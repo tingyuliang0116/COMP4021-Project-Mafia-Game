@@ -72,10 +72,25 @@ GameMap = (function () {
             frameWidth: item.item5.width,
             frameHeight: item.item5.height,
         });
+        this.load.spritesheet(`item6`,  item.item6.path, {
+            frameWidth: item.item6.width,
+            frameHeight: item.item6.height,
+        });
+        this.load.spritesheet(`item7`,  item.item7.path, {
+            frameWidth: item.item7.width,
+            frameHeight: item.item7.height,
+        });
+        this.load.spritesheet(`item8`,  item.item8.path, {
+            frameWidth: item.item8.width,
+            frameHeight: item.item8.height,
+        });
     }
 
     function create() {
-        const item_index = ['item1', 'item2', 'item3', 'item4', 'item5']
+        let users= Socket.getUsers();
+        let user_no =  Object.keys(users).length;
+        let no_of_items = user_no * 2;
+        const item_index = ['item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7', 'item8]
         const ship = this.add.image(0, 0, 'ship');
         otherPlayers = this.add.group();
         Object.values(onlineUsers).forEach((user) => {
@@ -114,7 +129,7 @@ GameMap = (function () {
         if (selfTeam === 'TownPeople') {
             items = this.physics.add.staticGroup();
 
-            for (let i = 0; i < 5; i ++) {
+            for (let i = 0; i < no_of_items; i ++) {
                 const item = this.add.sprite(item_location[i][0], item_location[i][1], item_index[i]);
                 item.name = item_index[i];
                 items.add(item);
