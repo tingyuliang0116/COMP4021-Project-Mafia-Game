@@ -4,6 +4,7 @@ const sounds = {
     gameover: new Audio("gameover.mp3"),
     background: new Audio("background.mp3")
 };
+
 var startTime = null;
 var endTime = null;
 const SignInForm = (function () {
@@ -344,6 +345,9 @@ const UI = (function () {
             component.initialize();
         }
     };
-
+    sounds.game.volume = 0.3
+    sounds.background.volume = 1
+    sounds.gameover.volume = 1
+    sounds.collect.volume = 1
     return {getUserDisplay, initialize};
 })();

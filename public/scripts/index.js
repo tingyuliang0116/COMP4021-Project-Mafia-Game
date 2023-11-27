@@ -12,25 +12,25 @@ let otherPlayers = {};
 let pressedKeys = [];
 let config = {};
 let onlineUsers = {};
-let item_location = [[-30, 250],[-800, 0], [-300, -320], [-500, -510], [620, -200], [-588, 522], [896, -126], [-382, -48], [470, -294], [628, 152]];
+let item_location = [[-30, 250], [-800, 0], [-300, -320], [-500, -510], [620, -200], [-588, 522], [896, -126], [-382, -48], [470, -294], [628, 152]];
 let items;
 
 const item = {
-    item1: {  width: 32, height: 32, count: 4, timing: 200, loop: true , path:'./item/item1.png'},
-    item2: {  width: 32, height: 32, count: 4, timing: 200, loop: true , path:'./item/item2.png'},
-    item3: { width: 32, height: 32, count: 4, timing: 200, loop: true,  path:'./item/item3.png'},
-    item4: { width: 32, height: 32, count: 4, timing: 200, loop: true,  path:'./item/item4.png' },
-    item5: { width: 32, height: 32, count: 4, timing: 200, loop: true,  path:'./item/item5.png' },
-    item6: { width: 32, height: 32, count: 4, timing: 200, loop: true,  path:'./item/item6.png' },
-    item7: { width: 32, height: 32, count: 4, timing: 200, loop: true,  path:'./item/item7.png' },
-    item8: { width: 32, height: 32, count: 4, timing: 200, loop: true,  path:'./item/item8.png' },
+    item1: {width: 32, height: 32, count: 4, timing: 200, loop: true, path: './item/item1.png'},
+    item2: {width: 32, height: 32, count: 4, timing: 200, loop: true, path: './item/item2.png'},
+    item3: {width: 32, height: 32, count: 4, timing: 200, loop: true, path: './item/item3.png'},
+    item4: {width: 32, height: 32, count: 4, timing: 200, loop: true, path: './item/item4.png'},
+    item5: {width: 32, height: 32, count: 4, timing: 200, loop: true, path: './item/item5.png'},
+    item6: {width: 32, height: 32, count: 4, timing: 200, loop: true, path: './item/item6.png'},
+    item7: {width: 32, height: 32, count: 4, timing: 200, loop: true, path: './item/item7.png'},
+    item8: {width: 32, height: 32, count: 4, timing: 200, loop: true, path: './item/item8.png'},
 };
-const ghost = {width:1024, height: 163, path: './dead.png'}; //when the player is dead 
+const ghost = {width: 1024, height: 163, path: './dead.png'}; //when the player is dead
 const players = {
-    'mafia': {width: 84, height: 128, exist: false, path: './player.png'}, 
-    'townPeople': {width: 166, height: 270, exist:false, path: '/player2.png'},
-    'townPeople2': {width: 128, height: 163, exist:false, path: '/player3.png'},
-    'townPeople3': {width: 95, height:158, exist:false, path: '/player4.png'}
+    'mafia': {width: 84, height: 128, exist: false, path: './player.png'},
+    'townPeople': {width: 166, height: 270, exist: false, path: '/player2.png'},
+    'townPeople2': {width: 128, height: 163, exist: false, path: '/player3.png'},
+    'townPeople3': {width: 95, height: 158, exist: false, path: '/player4.png'}
 };
 
 GameMap = (function () {
@@ -56,40 +56,40 @@ GameMap = (function () {
             frameWidth: item.item1.width,
             frameHeight: item.item1.height,
         });
-        this.load.spritesheet(`item2`,  item.item2.path, {
+        this.load.spritesheet(`item2`, item.item2.path, {
             frameWidth: item.item2.width,
             frameHeight: item.item2.height,
         });
-        this.load.spritesheet(`item3`,  item.item3.path, {
+        this.load.spritesheet(`item3`, item.item3.path, {
             frameWidth: item.item3.width,
             frameHeight: item.item3.height,
         });
-        this.load.spritesheet(`item4`,  item.item4.path, {
+        this.load.spritesheet(`item4`, item.item4.path, {
             frameWidth: item.item4.width,
             frameHeight: item.item4.height,
         });
-        this.load.spritesheet(`item5`,  item.item5.path, {
+        this.load.spritesheet(`item5`, item.item5.path, {
             frameWidth: item.item5.width,
             frameHeight: item.item5.height,
         });
-        this.load.spritesheet(`item6`,  item.item6.path, {
+        this.load.spritesheet(`item6`, item.item6.path, {
             frameWidth: item.item6.width,
             frameHeight: item.item6.height,
         });
-        this.load.spritesheet(`item7`,  item.item7.path, {
+        this.load.spritesheet(`item7`, item.item7.path, {
             frameWidth: item.item7.width,
             frameHeight: item.item7.height,
         });
-        this.load.spritesheet(`item8`,  item.item8.path, {
+        this.load.spritesheet(`item8`, item.item8.path, {
             frameWidth: item.item8.width,
             frameHeight: item.item8.height,
         });
     }
 
     function create() {
-        let users= Socket.getUsers();
-        let user_no =  Object.keys(users).length;
-        let no_of_items = (user_no-1) * 2;
+        let users = Socket.getUsers();
+        let user_no = Object.keys(users).length;
+        let no_of_items = (user_no - 1) * 2;
         console.log(no_of_items);
         const item_index = ['item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7', 'item8'];
         const ship = this.add.image(0, 0, 'ship');
@@ -107,8 +107,7 @@ GameMap = (function () {
                     player.sprite.displayWidth = PLAYER_WIDTH;
                     selfTeam = 'townPeople'
                 }
-            }
-            else { // if other user id 
+            } else { // if other user id
                 if (user.team === "Mafia") {
                     const otherPlayerSprite = this.add.sprite(PLAYER_START_X, PLAYER_START_Y, `mafia`);
                     otherPlayerSprite.displayHeight = PLAYER_HEIGHT;
@@ -130,14 +129,14 @@ GameMap = (function () {
         if (selfTeam === 'townPeople') {
             items = this.physics.add.staticGroup();
 
-            for (let i = 0; i < no_of_items; i ++) {
+            for (let i = 0; i < no_of_items; i++) {
                 const item = this.add.sprite(item_location[i][0], item_location[i][1], item_index[i]);
                 item.name = item_index[i];
                 items.add(item);
             }
 
             this.physics.add.overlap(player.sprite, items, collectItem, null, this);
-        } 
+        }
 
         this.anims.create({
             key: 'mafia_running',
@@ -156,15 +155,15 @@ GameMap = (function () {
         this.input.keyboard.on('keydown', (e) => {
             if (!pressedKeys.includes(e.code)) {
                 pressedKeys.push(e.code);
-                if( e.code === 'KeyE') {
+                if (e.code === 'KeyE') {
                     PLAYER_SPEED = 4
                 }
             }
         });
-        
+
         this.input.keyboard.on('keyup', (e) => {
             pressedKeys = pressedKeys.filter((key) => key !== e.code);
-            if( e.code === 'KeyE') {
+            if (e.code === 'KeyE') {
                 PLAYER_SPEED = 2
             }
         });
@@ -219,7 +218,7 @@ GameMap = (function () {
 
     const otherPlayerMove = function ({x, y, playerId}) {
         otherPlayers.getChildren().forEach((otherPlayer) => {
-            if(otherPlayer.playerId === playerId){
+            if (otherPlayer.playerId === playerId) {
                 if (otherPlayer.x > x) {
                     otherPlayer.flipX = true;
                 } else if (otherPlayer.x < x) {
@@ -234,7 +233,7 @@ GameMap = (function () {
 
     const otherPlayerMoveEnd = function (playerId) {
         otherPlayers.getChildren().forEach((otherPlayer) => {
-            if(otherPlayer.playerId === playerId){
+            if (otherPlayer.playerId === playerId) {
                 otherPlayer.moving = false;
             }
         })
@@ -243,9 +242,10 @@ GameMap = (function () {
     const collectItem = function (player, item) {
         Socket.collectItem(item.name);
         sounds.collect.play();
-        setTimeout(function() {
+        setTimeout(function () {
             sounds.collect.pause();
             sounds.collect.currentTime = 0;
+            sounds.background.currentTime = 0;
         }, 1000);
         items.killAndHide(item);
         item.body.enable = false;
