@@ -30,9 +30,9 @@ const item = {
 };
 const ghost = {width: 200, height: 164, path: './dead.png'}; //when the player is dead
 const players = {
-    'mafia': {width: 84, height: 128, exist: false, path: './player.png'}, 
-    'townPeople': {width: 166, height: 270, exist:false, path: '/player2.png'},
-    'ghost': {width: 84, height: 128, exist:false, path: '/dead.png'},
+    'mafia': {width: 84, height: 128, exist: false, path: './player.png'},
+    'townPeople': {width: 166, height: 270, exist: false, path: '/player2.png'},
+    'ghost': {width: 84, height: 128, exist: false, path: '/dead.png'},
 };
 
 GameMap = (function () {
@@ -80,11 +80,11 @@ GameMap = (function () {
         });
         this.load.image('ghost', ghost.path);
     }
+
     function create() {
         let users = Socket.getUsers();
         let user_no = Object.keys(users).length;
         let no_of_items = (user_no - 1) * 2;
-        console.log(no_of_items);
         const item_index = ['item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7', 'item8'];
         const ship = this.add.image(0, 0, 'ship');
         otherPlayers = this.physics.add.group();
@@ -160,7 +160,7 @@ GameMap = (function () {
             if (!pressedKeys.includes(e.code)) {
                 pressedKeys.push(e.code);
                 if (e.code === 'KeyE') {
-                    PLAYER_SPEED = 4
+                    PLAYER_SPEED = 2
                 }
             }
         });
@@ -170,7 +170,7 @@ GameMap = (function () {
             if (e.code === 'KeyE') {
                 PLAYER_SPEED = 2
             }
-            if ( e.code === 'KeyD' && canKill) {
+            if (e.code === 'KeyD' && canKill) {
                 killTownPeople();
             }
         });
@@ -254,7 +254,6 @@ GameMap = (function () {
         setTimeout(function () {
             sounds.collect.pause();
             sounds.collect.currentTime = 0;
-            sounds.background.currentTime = 0;
         }, 1000);
         items.killAndHide(item);
         item.body.enable = false;
@@ -272,32 +271,38 @@ GameMap = (function () {
     }
 
     const canKillTownPeople = function (mafia, townPeople) {
-        if (townPeople.body.gameObject.active) { 
+        if (townPeople.body.gameObject.active) {
             clearTimeout(resetCanKill)
             canKill = true
             targetTownPeopleId = townPeople.playerId
-            resetCanKill = setTimeout(function() {canKill = false, targetTownPeopleId = null}, 100)
+            resetCanKill = setTimeout(function () {
+                canKill = false, targetTownPeopleId = null
+            }, 100)
         }
     }
 
-    const killTownPeople = function() {
+    const killTownPeople = function () {
         Socket.killPlayer(targetTownPeopleId);
+        sounds.kill.play();
+        setTimeout(function () {
+            sounds.kill.pause();
+            sounds.kill.currentTime = 0;
+        }, 1000);
         otherPlayers.getChildren().forEach((otherPlayer) => {
-            if(otherPlayer.playerId === targetTownPeopleId){
+            if (otherPlayer.playerId === targetTownPeopleId) {
                 otherPlayer.body.gameObject.active = false;
                 otherPlayer.setTexture('ghost').setScale(0.2);
             }
         })
-    }       
-    
+    }
+
     const otherPlayerGetKilled = function (playerId) {
         if (playerId === selfId) {
             player.sprite.body.gameObject.active = false;
             player.sprite.setTexture('ghost')
-        }
-        else {
+        } else {
             otherPlayers.getChildren().forEach((otherPlayer) => {
-                if(otherPlayer.playerId === playerId){
+                if (otherPlayer.playerId === playerId) {
                     otherPlayer.body.gameObject.active = false;
                     otherPlayer.setTexture('ghost')
                 }

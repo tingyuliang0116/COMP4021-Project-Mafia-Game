@@ -2,7 +2,8 @@ const sounds = {
     game: new Audio("game.mp3"),
     collect: new Audio("collection.mp3"),
     gameover: new Audio("gameover.mp3"),
-    background: new Audio("background.mp3")
+    background: new Audio("background.mp3"),
+    kill: new Audio("kill.mp3")
 };
 
 var startTime = null;
@@ -346,6 +347,7 @@ const UI = (function () {
         }
     };
     sounds.game.volume = 0.3
+    sounds.kill.volume = 1
     sounds.background.volume = 1
     sounds.gameover.volume = 1
     sounds.collect.volume = 1

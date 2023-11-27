@@ -146,9 +146,10 @@ const httpServer = createServer(app);
 const io = new Server(httpServer);
 const onlineUsers = {};
 let totalItems; //set this when create items
-
+let totalPlayer;
 let totalScore = 0;
 let totalTownPeople = 0;
+let totalKilled = 0;
 const yourJson = require('./data/users.json'); // length of the users json for this server
 const length = Object.keys(yourJson).length; // so u can keep track of the users signed in 
 io.use((socket, next) => {
@@ -177,16 +178,22 @@ io.on("connection", (socket) => {
         totalItems = (user_no - 1) * 2
         if (totalScore === totalItems) {
             io.emit('game end', 'Townpeople', JSON.stringify(onlineUsers));
+            totalScore = 0;
+            totalKilled = 0;
         }
     })
     //call this when kill player
     socket.on('kill player', (playerId) => {
         const {username, name} = socket.request.session.user;
         onlineUsers[username].statistic += 1;
-        totalTownPeople -= 1
+        totalKilled += 1
         socket.broadcast.emit('kill player', playerId);
-        if (totalTownPeople === 0) {
+        let user_no = Object.keys(onlineUsers).length;
+        totalPlayer = (user_no - 1);
+        if (totalKilled === totalPlayer) {
             io.emit('game end', 'Mafia', JSON.stringify(onlineUsers));
+            totalScore = 0;
+            totalKilled = 0;
         }
     })
 
@@ -207,8 +214,8 @@ io.on("connection", (socket) => {
         onlineUsers[username].ready = false;
         onlineUsers[username].team = null;
         onlineUsers[username].statistic = 0;
-        totalScore = 0;
-        totalTownPeople = 0;
+
+
     })
 })
 
@@ -236,7 +243,6 @@ function checkstatus() {
         const usernames = Object.keys(onlineUsers);
         totalTownPeople = usernames.length - 1
         const shuffledUsernames = shuffle(usernames);
-
         // Assign teams
         const mafiaIndex = Math.floor(Math.random() * usernames.length);
         shuffledUsernames.forEach((username, index) => {
